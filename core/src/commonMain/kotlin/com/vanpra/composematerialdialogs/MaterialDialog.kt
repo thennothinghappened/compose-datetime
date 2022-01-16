@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.min
 
 /**
@@ -72,10 +71,10 @@ internal class MaterialDialogScopeImpl(
     override val dialogButtons = MaterialDialogButtons(this)
 
     override val callbacks = mutableStateMapOf<Int, () -> Unit>()
-    private val callbackCounter = AtomicInteger(0)
+    private var callbackCounter = 0
 
     override val positiveButtonEnabled = mutableStateMapOf<Int, Boolean>()
-    private val positiveEnabledCounter = AtomicInteger(0)
+    private var positiveEnabledCounter = 0
 
     /**
      * Hides the dialog and calls any callbacks from components in the dialog
@@ -95,8 +94,8 @@ internal class MaterialDialogScopeImpl(
         positiveButtonEnabled.clear()
         callbacks.clear()
 
-        positiveEnabledCounter.set(0)
-        callbackCounter.set(0)
+        positiveEnabledCounter = 0
+        callbackCounter = 0
     }
 
     /**
@@ -108,7 +107,7 @@ internal class MaterialDialogScopeImpl(
      */
     @Composable
     override fun PositiveButtonEnabled(valid: Boolean, onDispose: () -> Unit) {
-        val positiveEnabledIndex = remember { positiveEnabledCounter.getAndIncrement() }
+        val positiveEnabledIndex = remember { positiveEnabledCounter++ }
 
         DisposableEffect(valid) {
             positiveButtonEnabled[positiveEnabledIndex] = valid
@@ -126,7 +125,7 @@ internal class MaterialDialogScopeImpl(
      */
     @Composable
     override fun DialogCallback(callback: () -> Unit) {
-        val callbackIndex = rememberSaveable { callbackCounter.getAndIncrement() }
+        val callbackIndex = rememberSaveable { callbackCounter++ }
 
         DisposableEffect(Unit) {
             callbacks[callbackIndex] = callback

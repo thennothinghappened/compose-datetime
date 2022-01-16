@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vanpra.composematerialdialogs.MaterialDialogScope
-import java.util.*
 
 private val itemSizeDp = 55.dp
 private val tickSize = 35.dp
@@ -70,6 +69,7 @@ data class ARGBPickerState internal constructor(
  * @param onColorSelected a function which is called with a [Color]. The timing of this call is
  * dictated by [waitForPositiveButton]
  */
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MaterialDialogScope.colorChooser(
     colors: List<Color>,
@@ -152,6 +152,7 @@ fun MaterialDialogScope.colorChooser(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun PageIndicator(swipeState: SwipeableState<ColorPickerScreen>, constraints: Constraints) {
     BoxWithConstraints {
@@ -223,8 +224,8 @@ private fun CustomARGB(selectedColor: MutableState<Color>, showAlphaSelector: Bo
 //                )
 
                 val hexString = remember(selectedColor.value) {
-                    val rawHex = Integer.toHexString(selectedColor.value.toArgb())
-                        .uppercase(Locale.ROOT)
+                    val rawHex = selectedColor.value.toArgb().toString(16)
+                        .uppercase()
                         .padStart(8, '0')
 
                     if (!showAlphaSelector) rawHex.substring(2) else rawHex

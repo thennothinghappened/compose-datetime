@@ -2,6 +2,7 @@ package com.vanpra.composematerialdialogs.datetime.date
 
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -115,6 +116,7 @@ internal fun DatePickerImpl(title: String, state: DatePickerState) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun YearPicker(
     viewDate: PlatformLocalDate,
@@ -265,6 +267,7 @@ private fun CalendarViewHeader(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CalendarView(viewDate: PlatformLocalDate, state: DatePickerState) {
     Column(
@@ -330,6 +333,7 @@ private fun DateSelectionBox(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DayOfWeekHeader() {
     Row(

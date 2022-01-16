@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose") version "1.0.1"
@@ -5,16 +8,19 @@ plugins {
     // common-library plugin is not being applied because its applying kotlin-android which is already registered
     // probably from multiplatform plugin
     id("com.android.library")
-    id("com.vanniktech.maven.publish")
+    id("maven-publish")
     id("shot")
     id("org.jetbrains.dokka")
 }
 
-//group = ProjectConfig.Info.group
-//version = ProjectConfig.Info.version
+group = ProjectConfig.Info.group
+version = ProjectConfig.Info.version
 
 kotlin {
     android()
+    android {
+        publishLibraryVariants("release")
+    }
     jvm("desktop") {
         compilations.all {
             kotlinOptions.jvmTarget = "11"
@@ -100,6 +106,25 @@ shot {
     tolerance = 1.0 // Tolerance needed for CI
 }
 
-mavenPublish {
-    sonatypeHost = com.vanniktech.maven.publish.SonatypeHost.S01
+val githubProperties = Properties()
+try {
+    githubProperties.load(FileInputStream(rootProject.file("github.properties")))
+} catch (e: Exception) {
+}
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = "GithubPackages"
+                url = uri("https://maven.pkg.github.com/timeline-notes/compose-material-dialogs")
+
+                credentials {
+                    /**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/
+                    username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
+                    password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
+                }
+            }
+        }
+    }
 }

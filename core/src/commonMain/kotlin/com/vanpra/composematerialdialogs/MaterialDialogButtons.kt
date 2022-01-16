@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import java.util.*
 
 internal enum class MaterialDialogButtonTypes(val testTag: String) {
     Text("text"),
@@ -133,7 +132,7 @@ class MaterialDialogButtons(private val scope: MaterialDialogScope) {
                 .layoutId(MaterialDialogButtonTypes.Text)
                 .testTag(MaterialDialogButtonTypes.Text.testTag),
         ) {
-            Text(text = text.uppercase(Locale.ROOT), style = textStyle)
+            Text(text = text.uppercase(), style = textStyle)
         }
     }
 
@@ -153,7 +152,7 @@ class MaterialDialogButtons(private val scope: MaterialDialogScope) {
         disableDismiss: Boolean = false,
         onClick: () -> Unit = {}
     ) {
-        val buttonText = text.uppercase(Locale.ROOT)
+        val buttonText = text.uppercase()
         val buttonEnabled = scope.positiveButtonEnabled.values.all { it }
         val focusManager = LocalFocusManager.current
 
@@ -191,7 +190,7 @@ class MaterialDialogButtons(private val scope: MaterialDialogScope) {
         textStyle: TextStyle = MaterialTheme.typography.button,
         onClick: () -> Unit = {}
     ) {
-        val buttonText = text.uppercase(Locale.ROOT)
+        val buttonText = text.uppercase()
         val focusManager = LocalFocusManager.current
 
         TextButton(
