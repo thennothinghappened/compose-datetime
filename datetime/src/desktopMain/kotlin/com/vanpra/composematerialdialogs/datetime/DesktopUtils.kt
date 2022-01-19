@@ -171,6 +171,8 @@ actual class PlatformLocalDate(val date: LocalDate) {
     internal actual fun getNumDays(): Int {
         return date.month.length(date.isLeapYear)
     }
+
+    fun toLocalDate() : LocalDate = date
 }
 
 actual class PlatformLocalTime(var time: LocalTime) : Comparable<PlatformLocalTime> {
@@ -232,4 +234,6 @@ actual class PlatformLocalTime(var time: LocalTime) : Comparable<PlatformLocalTi
     actual fun toAM(): PlatformLocalTime {
         return PlatformLocalTime(time.toAM())
     }
+
+    fun toLocalTime() : LocalTime = time
 }

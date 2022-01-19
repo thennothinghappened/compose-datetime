@@ -46,7 +46,13 @@ kotlin {
         }
         val androidTest by getting {
             dependencies {
-                implementation("junit:junit:4.13.2")
+//                implementation("junit:junit:4.13.2")
+                implementation(project(":test-utils"))
+                implementation(Dependencies.AndroidX.Compose.activity)
+                implementation(Dependencies.AndroidX.Compose.testing)
+                implementation(Dependencies.AndroidX.Testing.core)
+                implementation(Dependencies.AndroidX.Testing.rules)
+                implementation(Dependencies.AndroidX.Testing.runner)
             }
         }
         val desktopMain by getting {

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -65,7 +66,8 @@ fun DatePicker(
     title: String = "SELECT DATE",
     state : DatePickerState = rememberDatePickerState(),
     colors: DatePickerColors = DatePickerDefaults.colors(),
-    onDateChange: (PlatformLocalDate) -> Unit = {}
+    onDateChange: (PlatformLocalDate) -> Unit = {},
+    allowedDateValidator: (PlatformLocalDate) -> Boolean = { true },
 ) {
 
     DisposableEffect(state.selected) {
@@ -73,11 +75,11 @@ fun DatePicker(
         onDispose { }
     }
 
-    DatePickerImpl(modifier = modifier,title = title, state = state,colors)
+    DatePickerImpl(modifier = modifier,title = title, state = state,colors,allowedDateValidator)
 }
 
 @Composable
-internal fun DatePickerImpl(modifier : Modifier = Modifier,title: String, state: DatePickerState,colors: DatePickerColors) {
+internal fun DatePickerImpl(modifier : Modifier = Modifier,title: String, state: DatePickerState,colors: DatePickerColors,allowedDateValidator: (PlatformLocalDate) -> Boolean) {
     val pagerState = rememberPlatformPagerState(
         initialPage = (state.selected.year - state.yearRange.first) * 12 + state.selected.monthValue - 1
     )
@@ -284,7 +286,7 @@ private fun CalendarView(viewDate: PlatformLocalDate, state: DatePickerState,col
             .testTag("dialog_date_calendar")
     ) {
         DayOfWeekHeader()
-        val calendarDatesData = remember { getDates(viewDate) }
+        val calendarDatesData = remember { viewDate.getDates() }
         val datesList = remember { IntRange(1, calendarDatesData.second).toList() }
         val possibleSelected = remember(state.selected) {
             viewDate.year == state.selected.year && viewDate.month == state.selected.month
