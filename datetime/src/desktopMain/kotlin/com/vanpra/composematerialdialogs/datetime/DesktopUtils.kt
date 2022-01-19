@@ -119,6 +119,12 @@ actual class PlatformLocalDate(val date: LocalDate) {
         get() = date.dayOfMonth
     actual val monthValue : Int
         get() = date.monthValue
+    actual val dayOfYear : Int
+        get() = date.dayOfYear
+    actual val dayOfWeekValue : Int
+        get() = date.dayOfWeek.value
+    actual val isLeapYear : Boolean
+        get() = date.isLeapYear
 
     actual fun withDayOfMonth(dayOfMonth : Int) : PlatformLocalDate{
         return PlatformLocalDate(date.withDayOfMonth(dayOfMonth))
@@ -149,11 +155,11 @@ actual class PlatformLocalDate(val date: LocalDate) {
         }
     }
 
-    actual fun getFirstDayOfMonth(): Int {
+    internal actual fun getFirstDayOfMonth(): Int {
         return date.withDayOfMonth(1).dayOfWeek.value % 7
     }
 
-    actual fun getNumDays(): Int {
+    internal actual fun getNumDays(): Int {
         return date.month.length(date.isLeapYear)
     }
 }
@@ -169,6 +175,12 @@ actual class PlatformLocalTime(var time: LocalTime) : Comparable<PlatformLocalTi
         get() = time.hour
     actual val minute: Int
         get() = time.minute
+    actual val second : Int
+        get() = time.second
+    actual val simpleHour: Int
+        get() = time.simpleHour
+    actual val nano : Int
+        get() = time.nano
 
     actual companion object {
 
@@ -188,9 +200,6 @@ actual class PlatformLocalTime(var time: LocalTime) : Comparable<PlatformLocalTi
             return PlatformLocalTime(LocalTime.of(hour,minute,second,nanosecond))
         }
     }
-
-    actual val simpleHour: Int
-        get() = time.simpleHour
 
     actual fun withHour(hour: Int): PlatformLocalTime {
         return PlatformLocalTime(time.withHour(hour))

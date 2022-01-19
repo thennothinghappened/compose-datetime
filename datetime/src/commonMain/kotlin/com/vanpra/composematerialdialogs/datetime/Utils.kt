@@ -70,13 +70,17 @@ expect class PlatformLocalDate {
     val month: Int
     val dayOfMonth: Int
     val monthValue: Int
+    val dayOfYear : Int
+    val dayOfWeekValue : Int
+    val isLeapYear : Boolean
+
 
     fun withDayOfMonth(dayOfMonth: Int): PlatformLocalDate
     fun getMonthShortLocalName(): String
     fun getDayOfWeekShortLocalName(): String
     fun getMonthDisplayName(): String
-    fun getFirstDayOfMonth(): Int
-    fun getNumDays(): Int
+    internal fun getFirstDayOfMonth(): Int
+    internal fun getNumDays(): Int
 
     companion object {
         val MIN: PlatformLocalDate
@@ -90,6 +94,9 @@ expect class PlatformLocalTime : Comparable<PlatformLocalTime> {
     val isAM: Boolean
     val hour: Int
     val minute: Int
+    val second : Int
+    val simpleHour : Int
+    val nano : Int
 
     companion object {
         val MIN: PlatformLocalTime
@@ -100,7 +107,6 @@ expect class PlatformLocalTime : Comparable<PlatformLocalTime> {
         fun of(hour: Int, minute: Int, second: Int, nanosecond: Int): PlatformLocalTime
     }
 
-    val simpleHour: Int
     fun withHour(hour: Int): PlatformLocalTime
     fun withMinute(minute: Int): PlatformLocalTime
     fun toAM(): PlatformLocalTime
