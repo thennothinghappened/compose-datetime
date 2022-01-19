@@ -102,6 +102,14 @@ fun DateTimeDialogDemo() {
         TimePicker()
     }
 
+    DialogAndShowButton(
+        buttonText = "Date Picker With Restricted Date"
+    ){
+        DatePicker(allowedDateValidator = {
+            it.dayOfWeekValue == 3 || it.dayOfWeekValue == 4
+        })
+    }
+
 }
 
 @Composable
