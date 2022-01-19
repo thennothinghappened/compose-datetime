@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -325,7 +326,7 @@ private fun DateSelectionBox(
             .size(40.dp)
             .clickable(
                 interactionSource = MutableInteractionSource(),
-                onClick = onClick,
+                onClick = { if (enabled) onClick() },
                 indication = null
             ),
         contentAlignment = Alignment.Center
@@ -336,7 +337,8 @@ private fun DateSelectionBox(
                 .size(32.dp)
                 .clip(CircleShape)
                 .background(colors.backgroundColor(selected).value)
-                .wrapContentSize(Alignment.Center),
+                .wrapContentSize(Alignment.Center)
+                .alpha(if (enabled) ContentAlpha.high else ContentAlpha.disabled),
             style = TextStyle(
                 color = colors.textColor(selected).value,
                 fontSize = 12.sp
