@@ -6,11 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import com.vanpra.composematerialdialogs.datetime.PlatformLocalDate
 
-internal class DatePickerState(
+class DatePickerState(
     initialDate: PlatformLocalDate,
-    val colors: DatePickerColors,
-    val yearRange: IntRange,
-    val dialogBackground: Color
+    val yearRange: IntRange
 ) {
     var selected by mutableStateOf(initialDate)
     var yearPickerShowing by mutableStateOf(false)

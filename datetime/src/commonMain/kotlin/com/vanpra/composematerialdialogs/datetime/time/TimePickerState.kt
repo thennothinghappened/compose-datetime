@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.vanpra.composematerialdialogs.datetime.PlatformLocalTime
 
-internal enum class ClockScreen {
+enum class ClockScreen {
     Hour,
     Minute;
 
@@ -13,8 +13,7 @@ internal enum class ClockScreen {
     fun isMinute() = this == Minute
 }
 
-internal class TimePickerState(
-    val colors: TimePickerColors,
+class TimePickerState(
     selectedTime: PlatformLocalTime,
     currentScreen: ClockScreen = ClockScreen.Hour,
     clockInput: Boolean = true,

@@ -32,7 +32,6 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
-                implementation(project(":core"))
             }
         }
         val commonTest by getting {

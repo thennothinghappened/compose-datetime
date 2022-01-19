@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
  * See [DatePickerDefaults.colors] for the default implementation
  */
 interface DatePickerColors {
+    val pickerBackgroundColor : Color
     val headerBackgroundColor: Color
     val headerTextColor: Color
 
@@ -34,6 +35,7 @@ interface DatePickerColors {
 }
 
 internal class DefaultDatePickerColors(
+    override val pickerBackgroundColor: Color,
     override val headerBackgroundColor: Color,
     override val headerTextColor: Color,
     private val activeBackgroundColor: Color,

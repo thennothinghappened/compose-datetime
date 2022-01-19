@@ -22,6 +22,7 @@ object DatePickerDefaults {
         inactiveTextColor: Color = MaterialTheme.colors.onBackground
     ): DatePickerColors {
         return DefaultDatePickerColors(
+            pickerBackgroundColor = MaterialTheme.colors.background,
             headerBackgroundColor = headerBackgroundColor,
             headerTextColor = headerTextColor,
             activeBackgroundColor = activeBackgroundColor,

@@ -34,53 +34,56 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.vanpra.composematerialdialogs.MaterialDialogScope
 import com.vanpra.composematerialdialogs.datetime.*
 import kotlinx.coroutines.launch
 
 /**
- * @brief A date picker body layout
- *
  * @param initialDate time to be shown to the user when the dialog is first shown.
  * Defaults to the current date if this is not set
  * @param yearRange the range of years the user should be allowed to pick from
- * @param waitForPositiveButton if true the [onDateChange] callback will only be called when the
- * positive button is pressed, otherwise it will be called on every input change
- * @param onDateChange callback with a LocalDateTime object when the user completes their input
  */
 @Composable
-fun MaterialDialogScope.datepicker(
+fun rememberDatePickerState(
     initialDate: PlatformLocalDate = PlatformLocalDate.now(),
-    title: String = "SELECT DATE",
-    colors: DatePickerColors = DatePickerDefaults.colors(),
     yearRange: IntRange = IntRange(1900, 2100),
-    waitForPositiveButton: Boolean = true,
-    onDateChange: (PlatformLocalDate) -> Unit = {}
-) {
-    val datePickerState = remember {
-        DatePickerState(initialDate, colors, yearRange, dialogState.dialogBackgroundColor!!)
-    }
-
-    DatePickerImpl(title = title, state = datePickerState)
-
-    if (waitForPositiveButton) {
-        DialogCallback { onDateChange(datePickerState.selected) }
-    } else {
-        DisposableEffect(datePickerState.selected) {
-            onDateChange(datePickerState.selected)
-            onDispose { }
-        }
+) : DatePickerState {
+    return remember {
+        DatePickerState(initialDate, yearRange)
     }
 }
 
+/**
+ * @brief A date picker body layout
+ * @param title Title of the picker
+ * @param state see [DatePickerState]
+ * @param colors see [DatePickerColors]
+ * @param onDateChange callback with a LocalDateTime object when the user completes their input
+ */
 @Composable
-internal fun DatePickerImpl(title: String, state: DatePickerState) {
+fun DatePicker(
+    modifier : Modifier = Modifier,
+    title: String = "SELECT DATE",
+    state : DatePickerState = rememberDatePickerState(),
+    colors: DatePickerColors = DatePickerDefaults.colors(),
+    onDateChange: (PlatformLocalDate) -> Unit = {}
+) {
+
+    DisposableEffect(state.selected) {
+        onDateChange(state.selected)
+        onDispose { }
+    }
+
+    DatePickerImpl(modifier = modifier,title = title, state = state,colors)
+}
+
+@Composable
+internal fun DatePickerImpl(modifier : Modifier = Modifier,title: String, state: DatePickerState,colors: DatePickerColors) {
     val pagerState = rememberPlatformPagerState(
         initialPage = (state.selected.year - state.yearRange.first) * 12 + state.selected.monthValue - 1
     )
 
-    Column(Modifier.fillMaxWidth()) {
-        CalendarHeader(title, state)
+    Column(modifier.fillMaxWidth()) {
+        CalendarHeader(title, state,colors)
         PlatformHorizontalPager(
             count = (state.yearRange.last - state.yearRange.first + 1) * 12,
             state = pagerState,
@@ -106,10 +109,15 @@ internal fun DatePickerImpl(title: String, state: DatePickerState) {
                         enter = slideInVertically(initialOffsetY = { -it }),
                         exit = slideOutVertically(targetOffsetY = { -it })
                     ) {
-                        YearPicker(viewDate, state, pagerState)
+                        YearPicker(
+                            viewDate = viewDate,
+                            state = state,
+                            colors = colors,
+                            pagerState = pagerState
+                        )
                     }
 
-                    CalendarView(viewDate, state)
+                    CalendarView(viewDate, state,colors)
                 }
             }
         }
@@ -119,21 +127,23 @@ internal fun DatePickerImpl(title: String, state: DatePickerState) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun YearPicker(
+    modifier : Modifier = Modifier,
     viewDate: PlatformLocalDate,
     state: DatePickerState,
+    colors: DatePickerColors,
     pagerState: PlatformPagerState,
 ) {
     val gridState = rememberLazyListState((viewDate.year - state.yearRange.first) / 3)
     val coroutineScope = rememberCoroutineScope()
 
     LazyVerticalGrid(
+        modifier = modifier,
         cells = GridCells.Fixed(3),
-        state = gridState,
-        modifier = Modifier.background(state.dialogBackground)
+        state = gridState
     ) {
         itemsIndexed(state.yearRange.toList()) { _, item ->
             val selected = remember { item == viewDate.year }
-            YearPickerItem(year = item, selected = selected, colors = state.colors) {
+            YearPickerItem(year = item, selected = selected, colors = colors) {
                 if (!selected) {
                     coroutineScope.launch {
                         pagerState.scrollToPage(
@@ -269,7 +279,7 @@ private fun CalendarViewHeader(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun CalendarView(viewDate: PlatformLocalDate, state: DatePickerState) {
+private fun CalendarView(viewDate: PlatformLocalDate, state: DatePickerState,colors: DatePickerColors) {
     Column(
         Modifier
             .padding(start = 12.dp, end = 12.dp)
@@ -292,7 +302,7 @@ private fun CalendarView(viewDate: PlatformLocalDate, state: DatePickerState) {
                     possibleSelected && it == state.selected.dayOfMonth
                 }
 
-                DateSelectionBox(it, selected, state.colors) {
+                DateSelectionBox(it, selected, colors) {
                     state.selected = viewDate.withDayOfMonth(it)
                 }
             }
@@ -364,20 +374,20 @@ private fun DayOfWeekHeader() {
 }
 
 @Composable
-private fun CalendarHeader(title: String, state: DatePickerState) {
+private fun CalendarHeader(title: String, state: DatePickerState,colors: DatePickerColors) {
     val month = remember(state.selected) { state.selected.getMonthShortLocalName() }
     val day = remember(state.selected) { state.selected.getDayOfWeekShortLocalName() }
 
     Box(
         Modifier
-            .background(state.colors.headerBackgroundColor)
+            .background(colors.headerBackgroundColor)
             .fillMaxWidth()
     ) {
         Column(Modifier.padding(start = 24.dp, end = 24.dp)) {
             Text(
                 text = title,
                 modifier = Modifier.paddingFromBaseline(top = if (isSmallDevice()) 24.dp else 32.dp),
-                color = state.colors.headerTextColor,
+                color = colors.headerTextColor,
                 style = TextStyle(fontSize = 12.sp)
             )
 
@@ -389,7 +399,7 @@ private fun CalendarHeader(title: String, state: DatePickerState) {
                 Text(
                     text = "$day, $month ${state.selected.dayOfMonth}",
                     modifier = Modifier.align(Alignment.CenterStart),
-                    color = state.colors.headerTextColor,
+                    color = colors.headerTextColor,
                     style = TextStyle(fontSize = 30.sp, fontWeight = W400)
                 )
             }
@@ -399,6 +409,6 @@ private fun CalendarHeader(title: String, state: DatePickerState) {
     }
 }
 
-private fun PlatformLocalDate.getDates() : Pair<Int,Int>{
-    return Pair(getFirstDayOfMonth(),getNumDays())
+private fun PlatformLocalDate.getDates(): Pair<Int, Int> {
+    return Pair(getFirstDayOfMonth(), getNumDays())
 }
