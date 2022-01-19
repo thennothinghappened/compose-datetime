@@ -1,8 +1,6 @@
 package com.vanpra.composematerialdialogs.datetime
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
@@ -53,15 +51,6 @@ expect interface PlatformPagerScope
 
 @Composable
 expect fun rememberPlatformPagerState(initialPage: Int = 0): PlatformPagerState
-
-@Composable
-expect fun PlatformHorizontalPager(
-    modifier: Modifier,
-    count: Int,
-    state: PlatformPagerState,
-    verticalAlignment: Alignment.Vertical,
-    content: @Composable PlatformPagerScope.(Int) -> Unit
-)
 
 // Platform LocalDate And LocalTime
 

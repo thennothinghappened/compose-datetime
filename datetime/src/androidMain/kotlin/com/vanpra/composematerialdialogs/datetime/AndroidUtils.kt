@@ -4,14 +4,11 @@ import android.graphics.Paint
 import android.graphics.Rect
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
-import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerScope
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
@@ -98,21 +95,6 @@ actual typealias PlatformPagerScope = PagerScope
 
 @Composable
 actual fun rememberPlatformPagerState(initialPage: Int) = rememberPagerState(initialPage = initialPage)
-
-@Composable
-actual fun PlatformHorizontalPager(
-    modifier: Modifier,
-    count: Int,
-    state: PlatformPagerState,
-    verticalAlignment: Alignment.Vertical,
-    content: @Composable PlatformPagerScope.(Int) -> Unit,
-) = HorizontalPager(
-    modifier = modifier,
-    count = count,
-    state = state,
-    verticalAlignment = verticalAlignment,
-    content = content
-)
 
 // Platform LocalDate And LocalTime
 

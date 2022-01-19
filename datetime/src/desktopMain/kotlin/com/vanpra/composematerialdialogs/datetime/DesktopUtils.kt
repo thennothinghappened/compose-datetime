@@ -1,12 +1,6 @@
 package com.vanpra.composematerialdialogs.datetime
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.nativeCanvas
@@ -75,7 +69,7 @@ internal fun Color.toAwtColor(): Int {
 actual class PlatformPagerState {
     var internalPageCount: Int = 0
         internal set
-    actual var currentPage: Int = 0
+    actual var currentPage: Int by mutableStateOf(0)
 
     actual suspend fun scrollToPage(page: Int, pageOffset: Float) {
         currentPage = page
@@ -97,24 +91,6 @@ actual interface PlatformPagerScope {
 actual fun rememberPlatformPagerState(initialPage: Int): PlatformPagerState {
     return remember {
         PlatformPagerState()
-    }
-}
-
-@Composable
-actual fun PlatformHorizontalPager(
-    modifier: Modifier,
-    count: Int,
-    state: PlatformPagerState,
-    verticalAlignment: Alignment.Vertical,
-    content: @Composable PlatformPagerScope.(Int) -> Unit,
-) {
-    state.internalPageCount = count
-    LazyRow(modifier = modifier, verticalAlignment = verticalAlignment) {
-        items(count) { index ->
-            Box(Modifier.fillMaxWidth()) {
-                content(object : PlatformPagerScope {}, index)
-            }
-        }
     }
 }
 
