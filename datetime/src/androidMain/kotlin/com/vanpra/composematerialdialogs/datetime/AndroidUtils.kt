@@ -84,18 +84,6 @@ internal fun Color.toAndroidColor(): Int {
     )
 }
 
-// Horizontal Pager
-
-actual typealias PlatformPagerState = PagerState
-
-actual val PlatformPagerState.platformPageCount: Int
-    get() = this.pageCount
-
-actual typealias PlatformPagerScope = PagerScope
-
-@Composable
-actual fun rememberPlatformPagerState(initialPage: Int) = rememberPagerState(initialPage = initialPage)
-
 // Platform LocalDate And LocalTime
 
 actual class PlatformLocalDate(val date: LocalDate) {

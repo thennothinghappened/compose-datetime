@@ -4,6 +4,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
+
+// Horizontal Pager
+
+actual typealias PlatformPagerState = PagerState
+
+actual val PlatformPagerState.platformPageCount: Int
+    get() = this.pageCount
+
+@Composable
+actual fun rememberPlatformPagerState(initialPage: Int) = rememberPagerState(initialPage = initialPage)
 
 @Composable
 actual fun PlatformHorizontalPager(
@@ -17,5 +29,7 @@ actual fun PlatformHorizontalPager(
     count = count,
     state = state,
     verticalAlignment = verticalAlignment,
-    content = content
+    content = {
+        content(object : PlatformPagerScope {}, this.currentPage)
+    }
 )

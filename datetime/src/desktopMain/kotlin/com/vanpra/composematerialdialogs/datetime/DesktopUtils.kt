@@ -1,5 +1,6 @@
 package com.vanpra.composematerialdialogs.datetime
 
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
@@ -66,33 +67,22 @@ internal fun Color.toAwtColor(): Int {
 }
 
 // Horizontal Pager
-actual class PlatformPagerState {
+actual class PlatformPagerState(val listState : LazyListState) {
     var internalPageCount: Int = 0
         internal set
     actual var currentPage: Int by mutableStateOf(0)
 
     actual suspend fun scrollToPage(page: Int, pageOffset: Float) {
-        currentPage = page
+        listState.scrollToItem(page)
     }
 
     actual suspend fun animateScrollToPage(page: Int, pageOffset: Float) {
-        currentPage = page
+        listState.animateScrollToItem(page)
     }
 }
 
 actual val PlatformPagerState.platformPageCount: Int
     get() = internalPageCount
-
-actual interface PlatformPagerScope {
-    //todo
-}
-
-@Composable
-actual fun rememberPlatformPagerState(initialPage: Int): PlatformPagerState {
-    return remember {
-        PlatformPagerState()
-    }
-}
 
 actual class PlatformLocalDate(val date: LocalDate) {
     actual val year: Int

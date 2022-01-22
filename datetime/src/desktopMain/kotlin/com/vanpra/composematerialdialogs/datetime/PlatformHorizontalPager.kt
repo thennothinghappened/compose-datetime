@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -15,6 +16,14 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.sun.jdi.connect.LaunchingConnector
+
+@Composable
+actual fun rememberPlatformPagerState(initialPage: Int): PlatformPagerState {
+    val listState = rememberLazyListState(initialPage)
+    return remember {
+        PlatformPagerState(listState)
+    }
+}
 
 @Composable
 actual fun PlatformHorizontalPager(
@@ -42,10 +51,6 @@ actual fun PlatformHorizontalPager(
         consumeHorizontal = !isVertical,
         consumeVertical = isVertical,
     )
-
-    LaunchedEffect(state.currentPage){
-        listState.animateScrollToItem(state.currentPage)
-    }
 
     LazyRow(
         state = listState,

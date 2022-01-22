@@ -37,21 +37,6 @@ internal expect fun Canvas.drawText(
     alpha: Int,
 )
 
-// Horizontal Pager For Date Picker
-
-expect class PlatformPagerState {
-    var currentPage: Int
-    suspend fun scrollToPage(page: Int, pageOffset: Float = 0f)
-    suspend fun animateScrollToPage(page: Int, pageOffset: Float = 0f)
-}
-
-expect val PlatformPagerState.platformPageCount: Int
-
-expect interface PlatformPagerScope
-
-@Composable
-expect fun rememberPlatformPagerState(initialPage: Int = 0): PlatformPagerState
-
 // Platform LocalDate And LocalTime
 
 expect class PlatformLocalDate {
