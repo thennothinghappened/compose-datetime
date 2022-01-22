@@ -35,15 +35,11 @@ actual fun PlatformHorizontalPager(
 ) {
     state.internalPageCount = count
 
-    val listState = rememberLazyListState()
     val isVertical = false
     val reverseLayout = false
     val contentPadding = PaddingValues(0.dp)
     val horizontalAlignment = Alignment.CenterHorizontally
     val itemSpacing = 0.dp
-    val scope = object : PlatformPagerScope{
-
-    }
 
     // We only consume nested flings in the main-axis, allowing cross-axis flings to propagate
     // as normal
@@ -53,7 +49,7 @@ actual fun PlatformHorizontalPager(
     )
 
     LazyRow(
-        state = listState,
+        state = state.listState,
         verticalAlignment = verticalAlignment,
         horizontalArrangement = Arrangement.spacedBy(itemSpacing, horizontalAlignment),
         reverseLayout = reverseLayout,
@@ -74,14 +70,7 @@ actual fun PlatformHorizontalPager(
                     .fillParentMaxWidth()
                     .wrapContentSize()
             ) {
-                content(scope,page)
-            }
-        }
-    }
-    LazyRow(modifier = modifier, verticalAlignment = verticalAlignment) {
-        items(count) { index ->
-            Box(Modifier.fillMaxWidth()) {
-                content(object : PlatformPagerScope {}, index)
+                content(object : PlatformPagerScope{},page)
             }
         }
     }

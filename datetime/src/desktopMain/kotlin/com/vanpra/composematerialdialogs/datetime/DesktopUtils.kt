@@ -70,13 +70,16 @@ internal fun Color.toAwtColor(): Int {
 actual class PlatformPagerState(val listState : LazyListState) {
     var internalPageCount: Int = 0
         internal set
-    actual var currentPage: Int by mutableStateOf(0)
+    actual var currentPage: Int = listState.firstVisibleItemIndex
+        internal set
 
     actual suspend fun scrollToPage(page: Int, pageOffset: Float) {
+        currentPage = page
         listState.scrollToItem(page)
     }
 
     actual suspend fun animateScrollToPage(page: Int, pageOffset: Float) {
+        currentPage = page
         listState.animateScrollToItem(page)
     }
 }

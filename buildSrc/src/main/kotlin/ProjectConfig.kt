@@ -5,6 +5,6 @@ object ProjectConfig {
 
     object Info {
         val group : String = "com.vanpra"
-        val version : String = "1.0.2"
+        val version : String = "1.0.3"
     }
 }
