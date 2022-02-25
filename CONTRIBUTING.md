@@ -65,13 +65,13 @@ emulator -avd [AVD NAME] -no-window -gpu swiftshader_indirect
 To run the Unit and Functionality tests locally you can run the following command:
 
 ```
-./gradlew connectedCheck -Pandroid.testInstrumentationRunnerArguments.filter=com.vanpra.composematerialdialogs.test.utils.NotScreenshotTestFilter
+./gradlew connectedCheck -Pandroid.testInstrumentationRunnerArguments.filter=com.wakaztahir.composematerialdialogs.test.utils.NotScreenshotTestFilter
 ```
 
 To run the screenshot tests you can use:
 
 ```
-./gradlew executeScreenshotTests -Pandroid.testInstrumentationRunnerArguments.filter=com.vanpra.composematerialdialogs.test.utils.ScreenshotTestFilter
+./gradlew executeScreenshotTests -Pandroid.testInstrumentationRunnerArguments.filter=com.wakaztahir.composematerialdialogs.test.utils.ScreenshotTestFilter
 ```
 
 You can then view the screenshot test report at in the directory `[module]/build/screenshots/`
@@ -79,7 +79,7 @@ You can then view the screenshot test report at in the directory `[module]/build
 If you have added a new screenshot test or changed the UI such that it affects an existing screenshot test you will have to recapture the screenshots using an emulator. Before doing this run the screenshot tests to verify that all the tests which are not affected by the change are still passing. After doing so you can run the following command which will capture on the emulator which should be setup as mentioned above:
 
 ```
-./gradlew executeScreenshotTests -Precord -Pandroid.testInstrumentationRunnerArguments.filter=com.vanpra.composematerialdialogs.test.utils.ScreenshotTestFilter
+./gradlew executeScreenshotTests -Precord -Pandroid.testInstrumentationRunnerArguments.filter=com.wakaztahir.composematerialdialogs.test.utils.ScreenshotTestFilter
 ```
 
 ## Pull Requests

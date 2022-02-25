@@ -4,9 +4,6 @@ import java.io.FileInputStream
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose") version "1.0.1"
-//    id("common-library")
-    // common-library plugin is not being applied because its applying kotlin-android which is already registered
-    // probably from multiplatform plugin
     id("com.android.library")
     id("maven-publish")
     id("shot")
@@ -32,6 +29,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
+                implementation(Dependencies.Accompanist.Pager)
             }
         }
         val commonTest by getting {
@@ -39,22 +37,8 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(Dependencies.Accompanist.pager)
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-//                implementation("junit:junit:4.13.2")
-                implementation(project(":test-utils"))
-                implementation(Dependencies.AndroidX.Compose.activity)
-                implementation(Dependencies.AndroidX.Compose.testing)
-                implementation(Dependencies.AndroidX.Testing.core)
-                implementation(Dependencies.AndroidX.Testing.rules)
-                implementation(Dependencies.AndroidX.Testing.runner)
-            }
-        }
+        val androidMain by getting
+        val androidTest by getting
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
@@ -72,7 +56,7 @@ android {
         targetSdk = ProjectConfig.targetSdk
 
         testInstrumentationRunner = "com.karumi.shot.ShotTestRunner"
-        testApplicationId = "com.vanpra.composematerialdialogs.test"
+        testApplicationId = "com.wakaztahir.composematerialdialogs.test"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -112,9 +96,8 @@ shot {
 }
 
 val githubProperties = Properties()
-try {
+kotlin.runCatching {
     githubProperties.load(FileInputStream(rootProject.file("github.properties")))
-} catch (e: Exception) {
 }
 
 afterEvaluate {
@@ -122,7 +105,7 @@ afterEvaluate {
         repositories {
             maven {
                 name = "GithubPackages"
-                url = uri("https://maven.pkg.github.com/timeline-notes/compose-material-dialogs")
+                url = uri("https://maven.pkg.github.com/codeckle/compose-datetime")
 
                 credentials {
                     /**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/

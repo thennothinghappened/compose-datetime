@@ -1,3 +1,5 @@
+import java.util.Properties
+import java.io.FileInputStream
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -24,11 +26,28 @@ buildscript {
 //group = BuildConfig.Info.group
 //version = BuildConfig.Info.version
 
+
+val githubProperties = java.util.Properties()
+try {
+    githubProperties.load(FileInputStream(rootProject.file("github.properties")))
+} catch (e: Exception) {
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            name = "GithubPackages"
+            url = uri("https://maven.pkg.github.com/codeckle/compose-datetime")
+
+            credentials {
+                /**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/
+                username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
+                password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
+            }
+        }
     }
 
     tasks.withType<KotlinCompile>().all {
@@ -45,7 +64,6 @@ allprojects {
         }
     }
 }
-
 
 tasks.dokkaHtmlMultiModule.configure {
     outputDirectory.set(projectDir.resolve("docs/api"))

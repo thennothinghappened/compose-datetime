@@ -1,19 +1,16 @@
 plugins {
-    id("org.jetbrains.compose") version "1.0.1"
+    id("org.jetbrains.compose") version ProjectConfig.ComposeVersion
     id("com.android.application")
     kotlin("android")
     id("kotlin-kapt")
 }
-
-//group = BuildConfig.Info.group
-//version = BuildConfig.Info.version
 
 android {
     compileSdk = ProjectConfig.compileSdk
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
-        applicationId = "com.vanpra.android"
+        applicationId = "com.wakaztahir.android"
         minSdk = ProjectConfig.minSdk
         targetSdk = ProjectConfig.targetSdk
 
@@ -39,10 +36,6 @@ android {
 
 dependencies {
     implementation(project(":common"))
-
-//    implementation(Dependencies.ComposeMaterialDialogs.core)
-//    implementation(Dependencies.ComposeMaterialDialogs.datetime)
-//    implementation(Dependencies.ComposeMaterialDialogs.color)
 
     implementation(Dependencies.Google.material)
     implementation(Dependencies.AndroidX.coreKtx)

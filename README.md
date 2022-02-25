@@ -1,30 +1,6 @@
-# Compose Material Dialogs
+# Compose Date Time Picker
 
-:rocket:  Easy to use library to help you build complex dialogs using Jetpack Compose :rocket:
-
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/ae8d455118164f43a24732761a970cc8)](https://www.codacy.com/gh/vanpra/compose-material-dialogs/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vanpra/compose-material-dialogs&amp;utm_campaign=Badge_Grade)![Build & Test](https://github.com/vanpra/compose-material-dialogs/actions/workflows/main.yml/badge.svg)
-
-**Current Library Compose Version: 1.1.0-beta04**
-
-### [See Releases and Changelog](https://github.com/vanpra/compose-material-dialogs/blob/main/CHANGELOG.md)
-
-## Core
-
-#### [Core Documentation](https://vanpra.github.io/compose-material-dialogs/Core)
-
-![](https://raw.githubusercontent.com/vanpra/compose-material-dialogs/main/imgs/full_core.png)
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/core)
-
-```gradle
-dependencies {
-  ...
-  implementation "io.github.vanpra.compose-material-dialogs:core:0.6.2" 
-  ...
-}
-```
-
-## Date and Time Picker
+This is a multiplatform port of ComposeMaterialDialogs - Date Time Picker
 
 #### [Date and Time Picker Documentation](https://vanpra.github.io/compose-material-dialogs/DateTimePicker)
 
@@ -32,34 +8,48 @@ dependencies {
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/datetime/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/datetime)
 
-```gradle
-dependencies {
-  ...
-  implementation "io.github.vanpra.compose-material-dialogs:datetime:0.6.2"
-  ...
+
+### Usage
+
+
+### Multiplatform Dependency
+
+#### Step 1 : Add the Github Packages Repo
+
+```kotlin
+
+val githubProperties = Properties()
+githubProperties.load(FileInputStream(rootProject.file("github.properties")))
+
+allprojects {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/username/repo")
+            credentials {
+                username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
+                password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
+            }
+        }
+    }
 }
 ```
 
-## Color Picker
+#### Step 2 : Create Github Properties File
 
-#### [Color Picker Documentation](https://vanpra.github.io/compose-material-dialogs/ColorPicker)
+Create `github.properties` file in your project at root level and add two properties (make github personal access token)
 
-![](https://raw.githubusercontent.com/vanpra/compose-material-dialogs/main/imgs/color_picker.png)
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/color/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/color)
-
-```gradle
-dependencies {
-  ...
-  implementation "io.github.vanpra.compose-material-dialogs:color:0.6.2"
-  ...
-}
+```properties
+gpr.usr=yourusername
+gpr.key=yourgithubpersonalaccesstoken
 ```
 
-## For Developers
+#### Step 3 : Add The Dependency
 
-If you would like to help by contributing to the library have a look at our [Contribution Guide](https://github.com/vanpra/compose-material-dialogs/blob/main/CONTRIBUTING.md) to get started
+Get the latest version , check it from releases page or better from the packages
 
-## Credits
+This code is for Kotlin Gradle Script , Convert it over to groovy by removing quotes and braces if you use groovy !
 
-This library's design is heavily inspired by https://github.com/afollestad/material-dialogs
+```kotlin
+implementation("com.wakaztahir:datetime:<current-version>")
+```

@@ -1,11 +1,8 @@
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version "1.0.1"
+    id("org.jetbrains.compose") version ProjectConfig.ComposeVersion
     id("com.android.library")
 }
-
-//group = ProjectConfig.Info.group
-//version = ProjectConfig.Info.version
 
 kotlin {
     android()
@@ -21,9 +18,7 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
 
-                implementation(project(":core"))
                 implementation(project(":datetime"))
-                implementation(project(":color"))
             }
         }
         val commonTest by getting {
@@ -34,7 +29,7 @@ kotlin {
         val androidMain by getting
         val androidTest by getting {
             dependencies {
-                implementation("junit:junit:4.13")
+                implementation("junit:junit:4.13.2")
             }
         }
         val desktopMain by getting {

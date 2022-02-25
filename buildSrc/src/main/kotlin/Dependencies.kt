@@ -1,6 +1,10 @@
 object Dependencies {
     const val desugar = "com.android.tools:desugar_jdk_libs:1.1.5"
 
+    object Accompanist {
+        const val Pager = "com.wakaztahir.accompanist:pager:0.24.3-alpha"
+    }
+
     object ComposeMaterialDialogs {
         const val version = "0.6.2"
 
@@ -11,11 +15,6 @@ object Dependencies {
 
     object Ktlint {
         const val version = "0.42.1"
-    }
-
-    object Accompanist {
-        private const val version = "0.21.4-beta"
-        const val pager = "com.google.accompanist:accompanist-pager:$version"
     }
 
     object Kotlin {
