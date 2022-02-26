@@ -3,7 +3,7 @@ import java.io.FileInputStream
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version "1.0.1"
+    id("org.jetbrains.compose") version ProjectConfig.ComposeVersion
     id("com.android.library")
     id("maven-publish")
     id("shot")
@@ -49,7 +49,7 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(ProjectConfig.compileSdk)
+    compileSdk = ProjectConfig.compileSdk
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = ProjectConfig.minSdk
@@ -96,9 +96,7 @@ shot {
 }
 
 val githubProperties = Properties()
-kotlin.runCatching {
-    githubProperties.load(FileInputStream(rootProject.file("github.properties")))
-}
+kotlin.runCatching { githubProperties.load(FileInputStream(rootProject.file("github.properties"))) }
 
 afterEvaluate {
     publishing {
@@ -107,11 +105,13 @@ afterEvaluate {
                 name = "GithubPackages"
                 url = uri("https://maven.pkg.github.com/codeckle/compose-datetime")
 
-                credentials {
-                    /**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/
-                    username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
-                    password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
-                }
+                runCatching {
+                    credentials {
+                        /**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/
+                        username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
+                        password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
+                    }
+                }.onFailure { it.printStackTrace() }
             }
         }
     }

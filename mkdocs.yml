@@ -1,25 +1,19 @@
-site_name: 'Compose Material Dialogs'
-site_description: 'A Material Dialog Builder for Jetpack Compose'
+site_name: 'Compose Date Time Picker'
+site_description: 'Jetpack Compose Date Time Picker'
 site_author: 'Pranav Maganti'
-site_url: 'https://vanpra.github.io/compose-material-dialogs/'
+site_url: 'https://codeckle.github.io/compose-datetime/'
 remote_branch: gh-pages
 
 docs_dir: docs
 
-repo_name: 'compose-material-dialogs'
-repo_url: 'https://github.com/vanpra/compose-material-dialogs'
+repo_name: 'compose-datetime'
+repo_url: 'https://github.com/codeckle/compose-datetime'
 
 nav:
   - 'Overview': index.md
-  - 'Core':
-    - 'Guide': Core.md
-    - 'API': api/core/index.html
-  - 'Color':
-    - 'Guide': ColorPicker.md
-    - 'API': api/color/index.html
   - 'DateTime':
     - 'Guide': DateTimePicker.md
-    - 'API': api/datetime/index.html
+    - 'API': api/datetime
 
 theme:
   name: material
