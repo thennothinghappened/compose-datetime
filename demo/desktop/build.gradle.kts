@@ -15,8 +15,8 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(":demo:common"))
                 implementation(compose.desktop.currentOs)
+                implementation(project(":demo:common"))
             }
         }
         val jvmTest by getting

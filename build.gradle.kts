@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
 
 plugins {
-    id("com.diffplug.spotless").version("6.0.4")
     kotlin("jvm").apply(false)
     kotlin("multiplatform").apply(false)
     kotlin("android").apply(false)
@@ -10,6 +9,7 @@ plugins {
     id("com.android.library").apply(false)
     id("org.jetbrains.compose").apply(false)
     id("org.jetbrains.dokka")
+    id("com.diffplug.spotless").version("6.0.4")
 }
 
 buildscript {

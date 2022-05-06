@@ -14,7 +14,6 @@ group = "com.wakaztahir"
 version = "1.0.4"
 
 kotlin {
-    android()
     android {
         publishLibraryVariants("release")
     }
@@ -37,8 +36,16 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
-        val androidTest by getting
+        val androidMain by getting {
+            dependencies {
+
+            }
+        }
+        val androidTest by getting {
+            dependencies {
+                implementation("junit:junit:4.13.2")
+            }
+        }
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
@@ -66,23 +73,9 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
-    packagingOptions.excludes.addAll(
-        listOf(
-            "META-INF/DEPENDENCIES.txt",
-            "META-INF/LICENSE",
-            "META-INF/LICENSE.txt",
-            "META-INF/NOTICE",
-            "META-INF/NOTICE.txt",
-            "META-INF/AL2.0",
-            "META-INF/LGPL2.1"
-        )
-    )
     dependencies {
         coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
     }
