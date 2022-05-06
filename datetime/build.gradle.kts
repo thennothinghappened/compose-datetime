@@ -3,15 +3,15 @@ import java.io.FileInputStream
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version ProjectConfig.ComposeVersion
+    id("org.jetbrains.compose")
     id("com.android.library")
     id("maven-publish")
     id("shot")
     id("org.jetbrains.dokka")
 }
 
-group = ProjectConfig.Info.group
-version = ProjectConfig.Info.version
+group = "com.wakaztahir"
+version = "1.0.4"
 
 kotlin {
     android()
@@ -29,7 +29,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
-                implementation(Dependencies.Accompanist.Pager)
+                implementation("com.wakaztahir.accompanist:pager:0.24.3-alpha")
             }
         }
         val commonTest by getting {
@@ -49,11 +49,11 @@ kotlin {
 }
 
 android {
-    compileSdk = ProjectConfig.compileSdk
+    compileSdk = 31
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = ProjectConfig.minSdk
-        targetSdk = ProjectConfig.targetSdk
+        minSdk = 21
+        targetSdk = 31
 
         testInstrumentationRunner = "com.karumi.shot.ShotTestRunner"
         testApplicationId = "com.wakaztahir.composematerialdialogs.test"
@@ -83,11 +83,8 @@ android {
             "META-INF/LGPL2.1"
         )
     )
-    composeOptions {
-        kotlinCompilerExtensionVersion = Dependencies.AndroidX.Compose.version
-    }
     dependencies {
-        coreLibraryDesugaring(Dependencies.desugar)
+        coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
     }
 }
 
@@ -96,7 +93,11 @@ shot {
 }
 
 val githubProperties = Properties()
-kotlin.runCatching { githubProperties.load(FileInputStream(rootProject.file("github.properties"))) }
+try {
+    githubProperties.load(FileInputStream(rootProject.file("github.properties")))
+} catch (ex: Exception) {
+    ex.printStackTrace()
+}
 
 afterEvaluate {
     publishing {
@@ -104,14 +105,14 @@ afterEvaluate {
             maven {
                 name = "GithubPackages"
                 url = uri("https://maven.pkg.github.com/codeckle/compose-datetime")
-
-                runCatching {
+                try {
                     credentials {
-                        /**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/
                         username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
                         password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
                     }
-                }.onFailure { it.printStackTrace() }
+                }catch(ex : Exception){
+                    ex.printStackTrace()
+                }
             }
         }
     }

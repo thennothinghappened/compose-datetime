@@ -1,6 +1,6 @@
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version ProjectConfig.ComposeVersion
+    id("org.jetbrains.compose")
     id("com.android.library")
 }
 
@@ -42,11 +42,11 @@ kotlin {
 }
 
 android {
-    compileSdk = ProjectConfig.compileSdk
+    compileSdk = 31
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = ProjectConfig.minSdk
-        targetSdk = ProjectConfig.targetSdk
+        minSdk = 21
+        targetSdk = 31
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

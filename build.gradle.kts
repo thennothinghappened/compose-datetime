@@ -2,8 +2,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
 
 plugins {
-    id("com.diffplug.spotless") version "6.0.4"
-    id("org.jetbrains.dokka") version ProjectConfig.DokkaVersion
+    id("com.diffplug.spotless").version("6.0.4")
+    kotlin("jvm").apply(false)
+    kotlin("multiplatform").apply(false)
+    kotlin("android").apply(false)
+    id("com.android.application").apply(false)
+    id("com.android.library").apply(false)
+    id("org.jetbrains.compose").apply(false)
+    id("org.jetbrains.dokka")
 }
 
 buildscript {
@@ -13,15 +19,20 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath(Dependencies.Kotlin.gradlePlugin)
-        classpath("com.android.tools.build:gradle:7.0.4")
-        classpath("com.vanniktech:gradle-maven-publish-plugin:0.17.0")
-        classpath(Dependencies.Shot.core)
+        classpath("com.karumi:shot:${property("shot.version")}")
     }
 }
 
+tasks.dokkaHtmlMultiModule.configure {
+    outputDirectory.set(rootProject.file("docs/api"))
+}
+
 val githubProperties = java.util.Properties()
-runCatching { githubProperties.load(FileInputStream(rootProject.file("github.properties"))) }
+try {
+    githubProperties.load(FileInputStream(rootProject.file("github.properties")))
+}catch(ex : Exception){
+    ex.printStackTrace()
+}
 
 allprojects {
     repositories {
@@ -31,14 +42,14 @@ allprojects {
         maven {
             name = "GithubPackages"
             url = uri("https://maven.pkg.github.com/codeckle/compose-datetime")
-
-            runCatching {
+            try {
                 credentials {
-                    /**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/
                     username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
                     password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
                 }
-            }.onFailure { it.printStackTrace() }
+            }catch(ex : Exception){
+                ex.printStackTrace()
+            }
         }
     }
 
@@ -57,16 +68,12 @@ allprojects {
     }
 }
 
-tasks.dokkaHtmlMultiModule.configure {
-    outputDirectory.set(rootProject.file("docs/api"))
-}
-
 subprojects {
     plugins.apply("com.diffplug.spotless")
     spotless {
         kotlin {
             target("**/*.kt")
-            ktlint(Dependencies.Ktlint.version)
+            ktlint(property("ktlint.version") as String)
         }
     }
 
