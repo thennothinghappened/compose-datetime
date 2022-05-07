@@ -1,6 +1,18 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
 
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    }
+    dependencies {
+        classpath("com.karumi:shot:${property("shot.version")}")
+    }
+}
+
 plugins {
     kotlin("jvm").apply(false)
     kotlin("multiplatform").apply(false)
@@ -12,17 +24,6 @@ plugins {
     id("com.diffplug.spotless").version("6.0.4")
 }
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("com.karumi:shot:${property("shot.version")}")
-    }
-}
-
 tasks.dokkaHtmlMultiModule.configure {
     outputDirectory.set(rootProject.file("docs/api"))
 }
@@ -30,7 +31,7 @@ tasks.dokkaHtmlMultiModule.configure {
 val githubProperties = java.util.Properties()
 try {
     githubProperties.load(FileInputStream(rootProject.file("github.properties")))
-}catch(ex : Exception){
+} catch (ex: Exception) {
     ex.printStackTrace()
 }
 
@@ -39,6 +40,7 @@ allprojects {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven {
             name = "GithubPackages"
             url = uri("https://maven.pkg.github.com/codeckle/compose-datetime")
@@ -47,7 +49,7 @@ allprojects {
                     username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
                     password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
                 }
-            }catch(ex : Exception){
+            } catch (ex: Exception) {
                 ex.printStackTrace()
             }
         }

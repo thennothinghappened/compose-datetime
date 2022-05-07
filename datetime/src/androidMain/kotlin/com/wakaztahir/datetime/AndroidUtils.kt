@@ -9,6 +9,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toKotlinLocalDate
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.TextStyle
@@ -18,17 +20,6 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 // Screen Configuration
-
-@Composable
-internal actual fun rememberScreenConfiguration(): ScreenConfiguration {
-    val config = LocalConfiguration.current
-    return remember(config.screenWidthDp, config.screenHeightDp) {
-        ScreenConfiguration(
-            screenWidthDp = config.screenWidthDp,
-            screenHeightDp = config.screenHeightDp
-        )
-    }
-}
 
 @Composable
 internal actual fun isSmallDevice(): Boolean {
@@ -81,64 +72,9 @@ internal fun Color.toAndroidColor(): Int {
     )
 }
 
+
+
 // Platform LocalDate And LocalTime
-
-actual class PlatformLocalDate(val date: LocalDate) {
-    actual val year: Int
-        get() = date.year
-    actual val month: Int
-        get() = date.month.value
-    actual val dayOfMonth: Int
-        get() = date.dayOfMonth
-    actual val monthValue: Int
-        get() = date.monthValue
-    actual val dayOfYear : Int
-        get() = date.dayOfYear
-    actual val dayOfWeekValue : Int
-        get() = date.dayOfWeek.value
-    actual val isLeapYear : Boolean
-        get() = date.isLeapYear
-
-    actual fun withDayOfMonth(dayOfMonth: Int): PlatformLocalDate {
-        return com.wakaztahir.datetime.PlatformLocalDate(date.withDayOfMonth(dayOfMonth))
-    }
-
-    actual fun getMonthShortLocalName(): String {
-        return date.month.shortLocalName
-    }
-
-    actual fun getMonthDisplayName(): String {
-        return date.month.getDisplayName(TextStyle.FULL, Locale.getDefault())
-    }
-
-    actual fun getDayOfWeekShortLocalName(): String {
-        return date.dayOfWeek.shortLocalName
-    }
-
-    actual companion object {
-
-        actual val MIN: PlatformLocalDate = com.wakaztahir.datetime.PlatformLocalDate(LocalDate.MIN)
-        actual val MAX: PlatformLocalDate = com.wakaztahir.datetime.PlatformLocalDate(LocalDate.MAX)
-
-        actual fun now(): PlatformLocalDate {
-            return com.wakaztahir.datetime.PlatformLocalDate(LocalDate.now())
-        }
-
-        actual fun of(year: Int, month: Int, dayOfMonth: Int): PlatformLocalDate {
-            return com.wakaztahir.datetime.PlatformLocalDate(LocalDate.of(year, month, dayOfMonth))
-        }
-    }
-
-    internal actual fun getFirstDayOfMonth(): Int {
-        return date.withDayOfMonth(1).dayOfWeek.value % 7
-    }
-
-    internal actual fun getNumDays(): Int {
-        return date.month.length(date.isLeapYear)
-    }
-
-    fun toLocalDate() : LocalDate = date
-}
 
 actual class PlatformLocalTime(var time: LocalTime) : Comparable<PlatformLocalTime> {
     override fun compareTo(other: PlatformLocalTime): Int {
@@ -202,4 +138,28 @@ actual class PlatformLocalTime(var time: LocalTime) : Comparable<PlatformLocalTi
     }
 
     fun toLocalTime() : LocalTime = time
+}
+
+internal actual fun kotlinx.datetime.LocalDate.getFirstDayOfMonth(): Int {
+    return toJavaLocalDate().withDayOfMonth(1).dayOfWeek.value % 7
+}
+
+internal actual fun kotlinx.datetime.LocalDate.getNumDays(): Int {
+    return toJavaLocalDate().let { it.month.length(it.isLeapYear) }
+}
+
+internal actual fun kotlinx.datetime.LocalDate.getMonthShortLocalName(): String {
+    return toJavaLocalDate().month.shortLocalName
+}
+
+internal actual fun kotlinx.datetime.LocalDate.getDayOfWeekShortLocalName(): String {
+    return toJavaLocalDate().dayOfWeek.shortLocalName
+}
+
+internal actual fun kotlinx.datetime.LocalDate.withDayOfMonth(dayOfMonth: Int): kotlinx.datetime.LocalDate {
+    return toJavaLocalDate().withDayOfMonth(dayOfMonth).toKotlinLocalDate()
+}
+
+internal actual fun kotlinx.datetime.LocalDate.getMonthDisplayName(): String {
+    return toJavaLocalDate().month.getDisplayName(TextStyle.FULL, Locale.getDefault())
 }

@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.wakaztahir"
-version = "1.0.4"
+version = "1.0.5"
 
 kotlin {
     android {
@@ -28,7 +28,8 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
-                implementation("com.wakaztahir.accompanist:pager:0.24.3-alpha")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.3")
+                implementation("com.wakaztahir.accompanist:pager:0.24.7-alpha")
             }
         }
         val commonTest by getting {
@@ -48,7 +49,7 @@ kotlin {
         }
         val desktopMain by getting {
             dependencies {
-                api(compose.preview)
+//                api(compose.preview)
             }
         }
         val desktopTest by getting

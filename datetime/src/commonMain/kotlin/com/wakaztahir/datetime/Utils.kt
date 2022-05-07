@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -11,11 +13,6 @@ import kotlin.math.sin
 
 internal fun Float.getOffset(angle: Double): Offset =
     Offset((this * cos(angle)).toFloat(), (this * sin(angle)).toFloat())
-
-internal class ScreenConfiguration(val screenWidthDp: Int, val screenHeightDp: Int)
-
-@Composable
-internal expect fun rememberScreenConfiguration(): ScreenConfiguration
 
 @Composable
 internal expect fun isSmallDevice(): Boolean
@@ -37,32 +34,19 @@ internal expect fun Canvas.drawText(
     alpha: Int,
 )
 
-// Platform LocalDate And LocalTime
+// LocalDate And LocalTime Functions
 
-expect class PlatformLocalDate {
-    val year: Int
-    val month: Int
-    val dayOfMonth: Int
-    val monthValue: Int
-    val dayOfYear : Int
-    val dayOfWeekValue : Int
-    val isLeapYear : Boolean
+internal expect fun LocalDate.withDayOfMonth(dayOfMonth: Int): LocalDate
 
+internal expect fun LocalDate.getFirstDayOfMonth(): Int
 
-    fun withDayOfMonth(dayOfMonth: Int): PlatformLocalDate
-    fun getMonthShortLocalName(): String
-    fun getDayOfWeekShortLocalName(): String
-    fun getMonthDisplayName(): String
-    internal fun getFirstDayOfMonth(): Int
-    internal fun getNumDays(): Int
+internal expect fun LocalDate.getNumDays(): Int
 
-    companion object {
-        val MIN: PlatformLocalDate
-        val MAX: PlatformLocalDate
-        fun now(): PlatformLocalDate
-        fun of(year: Int, month: Int, dayOfMonth: Int): PlatformLocalDate
-    }
-}
+internal expect fun LocalDate.getMonthShortLocalName() : String
+
+internal expect fun LocalDate.getDayOfWeekShortLocalName() : String
+
+internal expect fun LocalDate.getMonthDisplayName(): String
 
 expect class PlatformLocalTime : Comparable<PlatformLocalTime> {
     val isAM: Boolean

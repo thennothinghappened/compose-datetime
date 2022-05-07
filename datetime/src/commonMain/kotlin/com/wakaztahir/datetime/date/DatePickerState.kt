@@ -3,10 +3,10 @@ package com.wakaztahir.datetime.date
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.wakaztahir.datetime.PlatformLocalDate
+import kotlinx.datetime.LocalDate
 
 class DatePickerState(
-    initialDate: PlatformLocalDate,
+    initialDate: LocalDate,
     val yearRange: IntRange
 ) {
     var selected by mutableStateOf(initialDate)

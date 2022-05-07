@@ -3,7 +3,7 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
     plugins {
         kotlin("jvm").version(extra["kotlin.version"] as String)
