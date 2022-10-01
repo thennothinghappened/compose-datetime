@@ -28,8 +28,8 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.3")
-                implementation("com.wakaztahir.accompanist:pager:0.24.7-alpha")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                implementation("com.wakaztahir.accompanist:pager:0.26.5-beta")
             }
         }
         val commonTest by getting {
@@ -57,11 +57,11 @@ kotlin {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 32
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 32
 
         testInstrumentationRunner = "com.karumi.shot.ShotTestRunner"
         testApplicationId = "com.wakaztahir.composematerialdialogs.test"
