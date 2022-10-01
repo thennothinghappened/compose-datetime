@@ -132,11 +132,11 @@ internal actual fun kotlinx.datetime.LocalDate.getNumDays(): Int {
 }
 
 internal actual fun kotlinx.datetime.LocalDate.getMonthShortLocalName(): String {
-    return toJavaLocalDate().month.shortLocalName
+    return toJavaLocalDate().month.getShortLocalName(Locale.getDefault())
 }
 
 internal actual fun kotlinx.datetime.LocalDate.getDayOfWeekShortLocalName(): String {
-    return toJavaLocalDate().dayOfWeek.shortLocalName
+    return toJavaLocalDate().dayOfWeek.getShortLocalName(Locale.getDefault())
 }
 
 internal actual fun kotlinx.datetime.LocalDate.withDayOfMonth(dayOfMonth: Int): kotlinx.datetime.LocalDate {
