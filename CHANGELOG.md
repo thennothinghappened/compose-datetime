@@ -1,5 +1,40 @@
 # Changelog
 
+### 0.8.1-rc - 2022-05-25
+
+- Update compose to 1.2.0-rc03 ([#156](https://github.com/vanpra/compose-material-dialogs/issues/156))
+- Update kotlin to 1.7.0
+- Remove `material-icons-extended` dependency ([#153](https://github.com/vanpra/compose-material-dialogs/issues/153))
+- Add parameter for changing title and message style and color ([#150](https://github.com/vanpra/compose-material-dialogs/issues/150))
+
+### 0.8.0-beta - 2022-05-25
+
+- Update compose to 1.2.0-beta02 ([#149](https://github.com/vanpra/compose-material-dialogs/pull/149))
+
+### 0.7.2 - 2022-05-25
+
+- Fix input import and documentation ([#148](https://github.com/vanpra/compose-material-dialogs/pull/148))
+
+### 0.7.1 - 2022-05-16
+
+-  Internationalise start day of week in date picker ([#146](https://github.com/vanpra/compose-material-dialogs/issues/146) and [#54](https://github.com/vanpra/compose-material-dialogs/issues/54))
+-  Add modifier parameter to input component ([#141](https://github.com/vanpra/compose-material-dialogs/issues/141))
+-  Add state parameter to the list component ([#140](https://github.com/vanpra/compose-material-dialogs/issues/140))
+
+### 0.7.0 - 2022-03-03
+
+-  Update compose to 1.1.1
+-  [BREAKING CHANGE] Modify arguments of the `input` component to better match those of `TextField`
+-  Add `textFieldStyle` parameter to `input` component to allow for outlined text field style ([#92](https://github.com/vanpra/compose-material-dialogs/issues/92))
+-  Add text color options for month and day of week header text of date picker ([#124](https://github.com/vanpra/compose-material-dialogs/issues/124))
+-  Add ability to change time picker title color ([#123](https://github.com/vanpra/compose-material-dialogs/issues/123))
+-  Fix bug which causes input field to lose focus on validity change ([#132](https://github.com/vanpra/compose-material-dialogs/issues/132))
+
+### 0.6.3 - 2022-01-21
+
+-  Update compose to 1.1.0-rc01 
+-  Add ability to disable specific days in date picker (#126)[https://github.com/vanpra/compose-material-dialogs/pull/126]
+
 ### 0.6.2 - 2021-12-02
 
 -  Update compose to 1.1.0-beta04 ([#120](https://github.com/vanpra/compose-material-dialogs/issues/120))

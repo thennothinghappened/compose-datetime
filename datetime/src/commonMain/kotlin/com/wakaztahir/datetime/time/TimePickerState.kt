@@ -1,9 +1,10 @@
 package com.wakaztahir.datetime.time
 
+import kotlinx.datetime.LocalTime
+import com.wakaztahir.datetime.isAM
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.wakaztahir.datetime.PlatformLocalTime
 
 enum class ClockScreen {
     Hour,
@@ -14,10 +15,11 @@ enum class ClockScreen {
 }
 
 class TimePickerState(
-    selectedTime: PlatformLocalTime,
+    val colors : TimePickerColors,
+    selectedTime: LocalTime,
     currentScreen: ClockScreen = ClockScreen.Hour,
     clockInput: Boolean = true,
-    timeRange: ClosedRange<PlatformLocalTime>,
+    timeRange: ClosedRange<LocalTime>,
     is24Hour: Boolean,
 ) {
     var selectedTime by mutableStateOf(selectedTime)

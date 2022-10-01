@@ -5,7 +5,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -34,7 +34,7 @@ internal expect fun Canvas.drawText(
     alpha: Int,
 )
 
-// LocalDate And LocalTime Functions
+// LocalDate Functions
 
 internal expect fun LocalDate.withDayOfMonth(dayOfMonth: Int): LocalDate
 
@@ -48,26 +48,20 @@ internal expect fun LocalDate.getDayOfWeekShortLocalName() : String
 
 internal expect fun LocalDate.getMonthDisplayName(): String
 
-expect class PlatformLocalTime : Comparable<PlatformLocalTime> {
-    val isAM: Boolean
-    val hour: Int
-    val minute: Int
-    val second : Int
-    val simpleHour : Int
-    val nano : Int
+// LocalTime Functions
 
-    companion object {
-        val MIN: PlatformLocalTime
-        val MAX: PlatformLocalTime
-        fun now(): PlatformLocalTime
-        fun of(hour: Int, minute: Int): PlatformLocalTime
-        fun of(hour: Int, minute: Int, second: Int): PlatformLocalTime
-        fun of(hour: Int, minute: Int, second: Int, nanosecond: Int): PlatformLocalTime
-    }
+internal expect fun LocalTime.noSeconds() : LocalTime
 
-    fun withHour(hour: Int): PlatformLocalTime
-    fun withMinute(minute: Int): PlatformLocalTime
-    fun toAM(): PlatformLocalTime
-    fun toPM(): PlatformLocalTime
-    fun noSeconds(): PlatformLocalTime
-}
+internal expect val LocalTime.isAM : Boolean
+
+internal expect val LocalTime.simpleHour : Int
+
+internal expect fun LocalTime.withHour(hour: Int): LocalTime
+
+internal expect fun LocalTime.withMinute(mins : Int) : LocalTime
+
+internal expect fun LocalTime.toAM() : LocalTime
+
+internal expect fun LocalTime.toPM() : LocalTime
+
+internal expect fun getTimeRange(): ClosedRange<LocalTime>

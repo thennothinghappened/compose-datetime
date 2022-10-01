@@ -43,7 +43,7 @@ allprojects {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven {
             name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/codeckle/compose-datetime")
+            url = uri("https://maven.pkg.github.com/Qawaz/compose-datetime")
             try {
                 credentials {
                     username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()

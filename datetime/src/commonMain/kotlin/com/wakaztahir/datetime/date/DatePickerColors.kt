@@ -14,6 +14,7 @@ interface DatePickerColors {
     val pickerBackgroundColor : Color
     val headerBackgroundColor: Color
     val headerTextColor: Color
+    val calendarHeaderTextColor: Color
 
     /**
      * Gets the background color dependant on if the item is active or not
@@ -22,7 +23,7 @@ interface DatePickerColors {
      * @return background color as a State
      */
     @Composable
-    fun backgroundColor(active: Boolean): State<Color>
+    fun dateBackgroundColor(active: Boolean): State<Color>
 
     /**
      * Gets the text color dependant on if the item is active or not
@@ -31,25 +32,26 @@ interface DatePickerColors {
      * @return text color as a State
      */
     @Composable
-    fun textColor(active: Boolean): State<Color>
+    fun dateTextColor(active: Boolean): State<Color>
 }
 
 internal class DefaultDatePickerColors(
     override val pickerBackgroundColor: Color,
     override val headerBackgroundColor: Color,
     override val headerTextColor: Color,
-    private val activeBackgroundColor: Color,
-    private val inactiveBackgroundColor: Color,
-    private val activeTextColor: Color,
-    private val inactiveTextColor: Color
+    override val calendarHeaderTextColor: Color,
+    private val dateActiveBackgroundColor: Color,
+    private val dateInactiveBackgroundColor: Color,
+    private val dateActiveTextColor: Color,
+    private val dateInactiveTextColor: Color
 ) : DatePickerColors {
     @Composable
-    override fun backgroundColor(active: Boolean): State<Color> {
-        return rememberUpdatedState(if (active) activeBackgroundColor else inactiveBackgroundColor)
+    override fun dateBackgroundColor(active: Boolean): State<Color> {
+        return rememberUpdatedState(if (active) dateActiveBackgroundColor else dateInactiveBackgroundColor)
     }
 
     @Composable
-    override fun textColor(active: Boolean): State<Color> {
-        return rememberUpdatedState(if (active) activeTextColor else inactiveTextColor)
+    override fun dateTextColor(active: Boolean): State<Color> {
+        return rememberUpdatedState(if (active) dateActiveTextColor else dateInactiveTextColor)
     }
 }

@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 32
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
         applicationId = "com.wakaztahir.android"
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

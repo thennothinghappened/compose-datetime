@@ -1,13 +1,13 @@
 site_name: 'Compose Date Time Picker'
 site_description: 'Jetpack Compose Date Time Picker'
 site_author: 'Pranav Maganti'
-site_url: 'https://codeckle.github.io/compose-datetime/'
+site_url: 'https://qawaz.github.io/compose-datetime/'
 remote_branch: gh-pages
 
 docs_dir: docs
 
 repo_name: 'compose-datetime'
-repo_url: 'https://github.com/codeckle/compose-datetime'
+repo_url: 'https://github.com/Qawaz/compose-datetime'
 
 nav:
   - 'Overview': index.md

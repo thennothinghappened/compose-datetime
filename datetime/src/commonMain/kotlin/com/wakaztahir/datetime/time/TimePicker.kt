@@ -31,10 +31,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.wakaztahir.datetime.PlatformLocalTime
+import com.wakaztahir.datetime.*
 import com.wakaztahir.datetime.drawText
 import com.wakaztahir.datetime.getOffset
 import com.wakaztahir.datetime.isSmallDevice
+import com.wakaztahir.datetime.withHour
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.math.*
 
 /* Offset of the clock line and selected circle */
@@ -45,7 +50,6 @@ private data class SelectedOffset(
 )
 
 
-
 /**
  * @param initialTime The time to be shown to the user when the dialog is first shown.
  * Defaults to the current time if this is not set
@@ -54,15 +58,18 @@ private data class SelectedOffset(
  */
 @Composable
 fun rememberTimePickerState(
-    initialTime: PlatformLocalTime = PlatformLocalTime.now().noSeconds(),
-    timeRange: ClosedRange<PlatformLocalTime> = PlatformLocalTime.MIN..PlatformLocalTime.MAX,
+    initialTime: LocalTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time.noSeconds(),
+    timeRange: ClosedRange<LocalTime> = getTimeRange(),
+    colors: TimePickerColors = TimePickerDefaults.colors(),
     is24HourClock: Boolean = false,
-) : TimePickerState {
+): TimePickerState {
     return remember {
         TimePickerState(
+            colors = colors,
             selectedTime = initialTime.coerceIn(timeRange),
             timeRange = timeRange,
-            is24Hour = is24HourClock)
+            is24Hour = is24HourClock
+        )
     }
 }
 
@@ -76,35 +83,35 @@ fun rememberTimePickerState(
  */
 @Composable
 fun TimePicker(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     title: String = "SELECT TIME",
-    state : TimePickerState = rememberTimePickerState(),
+    state: TimePickerState = rememberTimePickerState(),
     colors: TimePickerColors = TimePickerDefaults.colors(),
-    onTimeChange: (PlatformLocalTime) -> Unit = {}
+    onTimeChange: (LocalTime) -> Unit = {}
 ) {
     DisposableEffect(state.selectedTime) {
         onTimeChange(state.selectedTime)
         onDispose { }
     }
 
-    TimePickerImpl(modifier = modifier,title = title, state = state,colors = colors)
+    TimePickerImpl(modifier = modifier, title = title, state = state, colors = colors)
 }
 
 @Composable
 //todo fix needed
 internal fun TimePickerExpanded(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     title: String = "SELECT TIME",
-    state : TimePickerState = rememberTimePickerState(),
+    state: TimePickerState = rememberTimePickerState(),
     colors: TimePickerColors = TimePickerDefaults.colors(),
-    onTimeChange: (PlatformLocalTime) -> Unit = {}
+    onTimeChange: (LocalTime) -> Unit = {}
 ) {
     DisposableEffect(state.selectedTime) {
         onTimeChange(state.selectedTime)
         onDispose { }
     }
 
-    TimePickerExpandedImpl(modifier = modifier,title = title, state = state,colors = colors)
+    TimePickerExpandedImpl(modifier = modifier, title = title, state = state, colors = colors)
 }
 
 @Composable
@@ -116,7 +123,7 @@ internal fun TimePickerExpandedImpl(
 ) {
     Column(modifier.padding(start = 24.dp, end = 24.dp)) {
         Box(Modifier.align(Alignment.Start)) {
-            TimePickerTitle(Modifier.height(36.dp), title)
+            TimePickerTitle(Modifier.height(36.dp), title, state)
         }
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
@@ -125,9 +132,9 @@ internal fun TimePickerExpandedImpl(
                     .padding(top = 72.dp, bottom = 50.dp)
                     .width(216.dp)
             ) {
-                TimeLayout(state = state,colors = colors)
+                TimeLayout(state = state, colors = colors)
                 Spacer(modifier = Modifier.height(12.dp))
-                HorizontalPeriodPicker(state = state,colors = colors)
+                HorizontalPeriodPicker(state = state, colors = colors)
             }
 
             /* This isn't an exact match to the material spec as there is a contradiction it.
@@ -137,11 +144,11 @@ internal fun TimePickerExpandedImpl(
             Crossfade(state.currentScreen) {
                 when (it) {
                     ClockScreen.Hour -> if (state.is24Hour) {
-                        ExtendedClockHourLayout(state = state,colors = colors)
+                        ExtendedClockHourLayout(state = state, colors = colors)
                     } else {
-                        ClockHourLayout(state = state,colors = colors)
+                        ClockHourLayout(state = state, colors = colors)
                     }
-                    ClockScreen.Minute -> ClockMinuteLayout(state = state,colors = colors)
+                    ClockScreen.Minute -> ClockMinuteLayout(state = state, colors = colors)
                 }
             }
         }
@@ -161,21 +168,21 @@ internal fun TimePickerImpl(
     ) {
         if (title != "") {
             Box(Modifier.align(Alignment.Start)) {
-                TimePickerTitle(Modifier.height(52.dp), title)
+                TimePickerTitle(Modifier.height(52.dp), title, state)
             }
         }
 
-        TimeLayout(state = state,colors = colors)
+        TimeLayout(state = state, colors = colors)
 
         Spacer(modifier = Modifier.height(if (isSmallDevice()) 24.dp else 36.dp))
         Crossfade(state.currentScreen) {
             when (it) {
                 ClockScreen.Hour -> if (state.is24Hour) {
-                    ExtendedClockHourLayout(state = state,colors = colors)
+                    ExtendedClockHourLayout(state = state, colors = colors)
                 } else {
-                    ClockHourLayout(state = state,colors = colors)
+                    ClockHourLayout(state = state, colors = colors)
                 }
-                ClockScreen.Minute -> ClockMinuteLayout(state = state,colors = colors)
+                ClockScreen.Minute -> ClockMinuteLayout(state = state, colors = colors)
             }
         }
 
@@ -265,12 +272,12 @@ private fun ClockMinuteLayout(state: TimePickerState, colors: TimePickerColors) 
 }
 
 @Composable
-internal fun TimePickerTitle(modifier: Modifier, text: String) {
+internal fun TimePickerTitle(modifier: Modifier, text: String, state: TimePickerState) {
     Box(modifier) {
         Text(
             text,
             modifier = Modifier.paddingFromBaseline(top = 28.dp),
-            style = TextStyle(color = MaterialTheme.colors.onBackground)
+            style = TextStyle(color = state.colors.headerTextColor())
         )
     }
 }
@@ -354,7 +361,7 @@ internal fun TimeLayout(modifier: Modifier = Modifier, state: TimePickerState, c
         )
 
         if (!state.is24Hour) {
-            VerticalPeriodPicker(state = state,colors = colors)
+            VerticalPeriodPicker(state = state, colors = colors)
         }
     }
 }

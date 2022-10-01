@@ -10,10 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.wakaztahir.datetime.PlatformLocalTime
 import com.wakaztahir.datetime.date.DatePicker
 import com.wakaztahir.datetime.time.TimePicker
 import com.wakaztahir.datetime.time.rememberTimePickerState
+import kotlinx.datetime.LocalTime
 
 /**
  * @brief Date and Time Picker Demos
@@ -50,7 +50,7 @@ fun DateTimeDialogDemo(modifier : Modifier = Modifier) = Column(modifier = modif
         DialogBox(onDismissRequest) {
             TimePicker(
                 modifier = dialogModifier, state = rememberTimePickerState(
-                    timeRange = PlatformLocalTime.of(9, 35)..PlatformLocalTime.of(21, 13), is24HourClock = false
+                    timeRange = LocalTime(9, 35)..LocalTime(21, 13), is24HourClock = false
                 )
             )
         }
@@ -72,7 +72,7 @@ fun DateTimeDialogDemo(modifier : Modifier = Modifier) = Column(modifier = modif
         DialogBox(onDismissRequest) {
             TimePicker(
                 modifier = dialogModifier, state = rememberTimePickerState(
-                    timeRange = PlatformLocalTime.of(9, 35)..PlatformLocalTime.of(21, 13), is24HourClock = true
+                    timeRange = LocalTime(9, 35)..LocalTime(21, 13), is24HourClock = true
                 )
             )
         }

@@ -187,7 +187,7 @@ private fun YearPickerItem(
             Modifier
                 .size(72.dp, 36.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(colors.backgroundColor(selected).value)
+                .background(colors.dateBackgroundColor(selected).value)
                 .clickable(
                     onClick = onClick,
                     interactionSource = MutableInteractionSource(),
@@ -198,7 +198,7 @@ private fun YearPickerItem(
             Text(
                 year.toString(),
                 style = TextStyle(
-                    color = colors.textColor(selected).value,
+                    color = colors.dateTextColor(selected).value,
                     fontSize = 18.sp
                 )
             )
@@ -293,7 +293,6 @@ private fun CalendarViewHeader(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CalendarView(
     viewDate: LocalDate,
@@ -359,11 +358,11 @@ private fun DateSelectionBox(
             modifier = Modifier
                 .size(32.dp)
                 .clip(CircleShape)
-                .background(colors.backgroundColor(selected).value)
+                .background(colors.dateBackgroundColor(selected).value)
                 .wrapContentSize(Alignment.Center)
                 .alpha(if (enabled) ContentAlpha.high else ContentAlpha.disabled),
             style = TextStyle(
-                color = colors.textColor(selected).value,
+                color = colors.dateTextColor(selected).value,
                 fontSize = 12.sp
             )
         )
@@ -373,6 +372,7 @@ private fun DateSelectionBox(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DayOfWeekHeader() {
+    val dayHeaders = listOf("S", "M", "T", "W", "T", "F", "S")
     Row(
         modifier = Modifier
             .height(40.dp)
@@ -381,7 +381,7 @@ private fun DayOfWeekHeader() {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         LazyVerticalGrid(columns = GridCells.Fixed(7)) {
-            DatePickerState.dayHeaders.forEach { it ->
+            dayHeaders.forEach { it ->
                 item {
                     Box(Modifier.size(40.dp)) {
                         Text(

@@ -10,7 +10,9 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
 import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toJavaLocalTime
 import kotlinx.datetime.toKotlinLocalDate
+import kotlinx.datetime.toKotlinLocalTime
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.TextStyle
@@ -73,72 +75,71 @@ internal fun Color.toAndroidColor(): Int {
 }
 
 
-
 // Platform LocalDate And LocalTime
 
-actual class PlatformLocalTime(var time: LocalTime) : Comparable<PlatformLocalTime> {
-    override fun compareTo(other: PlatformLocalTime): Int {
-        return time.compareTo(other.time)
-    }
-
-    actual val isAM: Boolean
-        get() = time.isAM
-    actual val hour: Int
-        get() = time.hour
-    actual val minute: Int
-        get() = time.minute
-    actual val second : Int
-        get() = time.second
-    actual val simpleHour: Int
-        get() = time.simpleHour
-    actual val nano: Int
-        get() = time.nano
-
-    actual companion object {
-
-        actual val MIN: PlatformLocalTime = com.wakaztahir.datetime.PlatformLocalTime(LocalTime.MIN)
-        actual val MAX: PlatformLocalTime = com.wakaztahir.datetime.PlatformLocalTime(LocalTime.MAX)
-
-        actual fun now(): PlatformLocalTime {
-            return com.wakaztahir.datetime.PlatformLocalTime(LocalTime.now())
-        }
-
-        actual fun of(hour: Int, minute: Int): PlatformLocalTime {
-            return com.wakaztahir.datetime.PlatformLocalTime(LocalTime.of(hour, minute))
-        }
-
-        actual fun of(hour: Int, minute: Int, second: Int): PlatformLocalTime {
-            return com.wakaztahir.datetime.PlatformLocalTime(LocalTime.of(hour, minute, second))
-        }
-
-        actual fun of(hour: Int, minute: Int, second: Int, nanosecond: Int): PlatformLocalTime {
-            return com.wakaztahir.datetime.PlatformLocalTime(LocalTime.of(hour, minute, second, nanosecond))
-        }
-
-    }
-
-    actual fun withHour(hour: Int): PlatformLocalTime {
-        return com.wakaztahir.datetime.PlatformLocalTime(time.withHour(hour))
-    }
-
-    actual fun withMinute(minute: Int): PlatformLocalTime {
-        return com.wakaztahir.datetime.PlatformLocalTime(time.withMinute(minute))
-    }
-
-    actual fun noSeconds(): PlatformLocalTime {
-        return com.wakaztahir.datetime.PlatformLocalTime(time.noSeconds())
-    }
-
-    actual fun toPM(): PlatformLocalTime {
-        return com.wakaztahir.datetime.PlatformLocalTime(time.toPM())
-    }
-
-    actual fun toAM(): PlatformLocalTime {
-        return com.wakaztahir.datetime.PlatformLocalTime(time.toAM())
-    }
-
-    fun toLocalTime() : LocalTime = time
-}
+//actual class PlatformLocalTime(var time: LocalTime) : Comparable<PlatformLocalTime> {
+//    override fun compareTo(other: PlatformLocalTime): Int {
+//        return time.compareTo(other.time)
+//    }
+//
+//    actual val isAM: Boolean
+//        get() = time.isAM
+//    actual val hour: Int
+//        get() = time.hour
+//    actual val minute: Int
+//        get() = time.minute
+//    actual val second: Int
+//        get() = time.second
+//    actual val simpleHour: Int
+//        get() = time.simpleHour
+//    actual val nano: Int
+//        get() = time.nano
+//
+//    actual companion object {
+//
+//        actual val MIN: PlatformLocalTime = com.wakaztahir.datetime.PlatformLocalTime(LocalTime.MIN)
+//        actual val MAX: PlatformLocalTime = com.wakaztahir.datetime.PlatformLocalTime(LocalTime.MAX)
+//
+//        actual fun now(): PlatformLocalTime {
+//            return com.wakaztahir.datetime.PlatformLocalTime(LocalTime.now())
+//        }
+//
+//        actual fun of(hour: Int, minute: Int): PlatformLocalTime {
+//            return com.wakaztahir.datetime.PlatformLocalTime(LocalTime.of(hour, minute))
+//        }
+//
+//        actual fun of(hour: Int, minute: Int, second: Int): PlatformLocalTime {
+//            return com.wakaztahir.datetime.PlatformLocalTime(LocalTime.of(hour, minute, second))
+//        }
+//
+//        actual fun of(hour: Int, minute: Int, second: Int, nanosecond: Int): PlatformLocalTime {
+//            return com.wakaztahir.datetime.PlatformLocalTime(LocalTime.of(hour, minute, second, nanosecond))
+//        }
+//
+//    }
+//
+//    actual fun withHour(hour: Int): PlatformLocalTime {
+//        return com.wakaztahir.datetime.PlatformLocalTime(time.withHour(hour))
+//    }
+//
+//    actual fun withMinute(minute: Int): PlatformLocalTime {
+//        return com.wakaztahir.datetime.PlatformLocalTime(time.withMinute(minute))
+//    }
+//
+//    actual fun noSeconds(): PlatformLocalTime {
+//        return com.wakaztahir.datetime.PlatformLocalTime(time.noSeconds())
+//    }
+//
+//    actual fun toPM(): PlatformLocalTime {
+//        return com.wakaztahir.datetime.PlatformLocalTime(time.toPM())
+//    }
+//
+//    actual fun toAM(): PlatformLocalTime {
+//        return com.wakaztahir.datetime.PlatformLocalTime(time.toAM())
+//    }
+//
+//    fun toLocalTime(): LocalTime = time
+//}
 
 internal actual fun kotlinx.datetime.LocalDate.getFirstDayOfMonth(): Int {
     return toJavaLocalDate().withDayOfMonth(1).dayOfWeek.value % 7
@@ -163,3 +164,25 @@ internal actual fun kotlinx.datetime.LocalDate.withDayOfMonth(dayOfMonth: Int): 
 internal actual fun kotlinx.datetime.LocalDate.getMonthDisplayName(): String {
     return toJavaLocalDate().month.getDisplayName(TextStyle.FULL, Locale.getDefault())
 }
+
+internal actual fun kotlinx.datetime.LocalTime.noSeconds() : kotlinx.datetime.LocalTime
+    = this.toJavaLocalTime().noSeconds().toKotlinLocalTime()
+
+internal actual val kotlinx.datetime.LocalTime.isAM : Boolean
+    get() = this.toJavaLocalTime().isAM
+
+internal actual val kotlinx.datetime.LocalTime.simpleHour : Int
+    get() = this.toJavaLocalTime().simpleHour
+
+internal actual fun kotlinx.datetime.LocalTime.withHour(hour: Int) =
+    this.toJavaLocalTime().withHour(hour).toKotlinLocalTime()
+
+internal actual fun kotlinx.datetime.LocalTime.withMinute(mins : Int) =
+    this.toJavaLocalTime().withMinute(mins).toKotlinLocalTime()
+
+internal actual fun kotlinx.datetime.LocalTime.toAM() =
+    this.toJavaLocalTime().toAM().toKotlinLocalTime()
+
+internal actual fun kotlinx.datetime.LocalTime.toPM() =
+    this.toJavaLocalTime().toPM().toKotlinLocalTime()
+internal actual fun getTimeRange(): ClosedRange<kotlinx.datetime.LocalTime> = LocalTime.MIN.toKotlinLocalTime()..LocalTime.MAX.toKotlinLocalTime()
