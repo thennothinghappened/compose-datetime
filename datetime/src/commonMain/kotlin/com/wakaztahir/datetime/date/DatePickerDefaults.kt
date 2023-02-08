@@ -38,7 +38,7 @@ object DatePickerDefaults {
             dateActiveBackgroundColor = dateActiveBackgroundColor,
             dateInactiveBackgroundColor = dateInactiveBackgroundColor,
             dateActiveTextColor = dateActiveTextColor,
-            dateInactiveTextColor = dateInactiveTextColor,
+            dateInactiveTextColor = dateInactiveTextColor
         )
     }
 }

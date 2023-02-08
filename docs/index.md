@@ -1,55 +1,49 @@
-# Compose Date Time Picker
+# Compose Material Dialogs
 
-This is a multiplatform port of ComposeMaterialDialogs - Date Time Picker
+## Core
 
-#### [Date and Time Picker Documentation](https://vanpra.github.io/compose-material-dialogs/DateTimePicker)
+#### [Core Documentation](Core.md)
+
+![](https://raw.githubusercontent.com/vanpra/compose-material-dialogs/main/imgs/full_core.png)
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/core)
+
+```gradle
+dependencies {
+  ...
+  implementation "io.github.vanpra.compose-material-dialogs:core:0.9.0" 
+  ...
+}
+```
+
+## Date and Time Picker
+
+#### [Date and Time Picker Documentation](DateTimePicker.md)
 
 ![](https://raw.githubusercontent.com/vanpra/compose-material-dialogs/main/imgs/date_and_time.png)
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/datetime/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/datetime)
 
-
-### Usage
-
-
-### Multiplatform Dependency
-
-#### Step 1 : Add the Github Packages Repo
-
-```kotlin
-
-val githubProperties = Properties()
-githubProperties.load(FileInputStream(rootProject.file("github.properties")))
-
-allprojects {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/username/repo")
-            credentials {
-                username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
-                password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
-            }
-        }
-    }
+```gradle
+dependencies {
+  ...
+  implementation "io.github.vanpra.compose-material-dialogs:datetime:0.9.0"
+  ...
 }
 ```
 
-#### Step 2 : Create Github Properties File
+## Color Picker
 
-Create `github.properties` file in your project at root level and add two properties (make github personal access token)
+#### [Color Picker Documentation](ColorPicker.md)
 
-```properties
-gpr.usr=yourusername
-gpr.key=yourgithubpersonalaccesstoken
-```
+![](https://raw.githubusercontent.com/vanpra/compose-material-dialogs/main/imgs/color_picker.png)
 
-#### Step 3 : Add The Dependency
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/color/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/color)
 
-Get the latest version , check it from releases page or better from the packages
-
-This code is for Kotlin Gradle Script , Convert it over to groovy by removing quotes and braces if you use groovy !
-
-```kotlin
-implementation("com.wakaztahir:datetime:<current-version>")
+```gradle
+dependencies {
+  ...
+  implementation "io.github.vanpra.compose-material-dialogs:color:0.9.0"
+  ...
+}
 ```
