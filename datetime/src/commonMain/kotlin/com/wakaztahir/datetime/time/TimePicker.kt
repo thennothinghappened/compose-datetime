@@ -9,10 +9,9 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
@@ -21,18 +20,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.consumePositionChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wakaztahir.datetime.*
-import com.wakaztahir.datetime.drawText
 import com.wakaztahir.datetime.getOffset
 import com.wakaztahir.datetime.isSmallDevice
 import com.wakaztahir.datetime.withHour
@@ -348,7 +346,7 @@ internal fun TimeLayout(modifier: Modifier = Modifier, state: TimePickerState, c
         ) {
             Text(
                 text = ":",
-                style = TextStyle(fontSize = 50.sp, color = MaterialTheme.colors.onBackground)
+                style = TextStyle(fontSize = 50.sp, color = MaterialTheme.colorScheme.onBackground)
             )
         }
 
@@ -403,7 +401,7 @@ private fun VerticalPeriodPicker(state: TimePickerState, colors: TimePickerColor
                 "AM",
                 style = TextStyle(
                     colors.textColor(state.selectedTime.isAM).value
-                        .copy(alpha = if (isAMEnabled) ContentAlpha.high else ContentAlpha.disabled)
+                        .copy(alpha = if (isAMEnabled) colors.enabledAlpha else colors.disabledAlpha)
                 )
             )
         }
@@ -433,7 +431,7 @@ private fun VerticalPeriodPicker(state: TimePickerState, colors: TimePickerColor
                 "PM",
                 style = TextStyle(
                     colors.textColor(!state.selectedTime.isAM).value.copy(
-                        alpha = if (isPMEnabled) ContentAlpha.high else ContentAlpha.disabled
+                        alpha = if (isPMEnabled) colors.enabledAlpha else colors.disabledAlpha
                     )
                 )
             )
@@ -481,7 +479,7 @@ private fun HorizontalPeriodPicker(state: TimePickerState, colors: TimePickerCol
                 "AM",
                 style = TextStyle(
                     colors.textColor(state.selectedTime.isAM).value
-                        .copy(alpha = if (isAMEnabled) ContentAlpha.high else ContentAlpha.disabled)
+                        .copy(alpha = if (isAMEnabled) colors.enabledAlpha else colors.disabledAlpha)
                 )
             )
         }
@@ -511,7 +509,7 @@ private fun HorizontalPeriodPicker(state: TimePickerState, colors: TimePickerCol
                 "PM",
                 style = TextStyle(
                     colors.textColor(!state.selectedTime.isAM).value.copy(
-                        alpha = if (isPMEnabled) ContentAlpha.high else ContentAlpha.disabled
+                        alpha = if (isPMEnabled) colors.enabledAlpha else colors.disabledAlpha
                     )
                 )
             )
@@ -519,6 +517,7 @@ private fun HorizontalPeriodPicker(state: TimePickerState, colors: TimePickerCol
     }
 }
 
+@OptIn(ExperimentalTextApi::class)
 @Composable
 private fun ClockLayout(
     isNamedAnchor: (Int) -> Boolean = { true },
@@ -531,6 +530,7 @@ private fun ClockLayout(
     onAnchorChange: (Int) -> Unit = {},
     onLift: () -> Unit = {}
 ) {
+    val textMeasurer = rememberTextMeasurer()
     BoxWithConstraints {
         val faceDiameter = min(maxHeight.value, maxWidth.value).coerceAtMost(256f).dp
         val faceDiameterPx = with(LocalDensity.current) { faceDiameter.toPx() }
@@ -642,8 +642,8 @@ private fun ClockLayout(
         val selectorColor = remember { colors.selectorColor() }
         val selectorTextColor = remember { colors.selectorTextColor() }
 
-        val enabledAlpha = ContentAlpha.high
-        val disabledAlpha = ContentAlpha.disabled
+        val enabledAlpha = colors.enabledAlpha
+        val disabledAlpha = colors.disabledAlpha
 
         Canvas(
             modifier = Modifier
@@ -677,7 +677,7 @@ private fun ClockLayout(
                 )
             }
 
-            drawIntoCanvas { canvas ->
+//            drawIntoCanvas { canvas ->
                 fun drawAnchorText(
                     anchor: Int,
                     textSize: Float,
@@ -695,14 +695,15 @@ private fun ClockLayout(
                     val contentAlpha = if (isAnchorEnabled(anchor)) enabledAlpha else disabledAlpha
 
                     drawText(
-                        textSize,
-                        textOuter,
-                        center,
-                        angle.toFloat(),
-                        canvas,
-                        radius,
-                        alpha = max((contentAlpha * 255f).roundToInt(), alpha),
-                        color = textColor
+                        textMeasurer = textMeasurer,
+                        text = textOuter,
+                        x = center.x,
+                        y = center.y,
+                        color = textColor,
+                        textSize = textSize,
+                        angle = angle.toFloat(),
+                        radius = radius,
+                        alpha = max((contentAlpha * 255f).roundToInt(), alpha)
                     )
                 }
 
@@ -719,31 +720,9 @@ private fun ClockLayout(
                             alpha = (255 * 0.8f).toInt()
                         )
                     }
-                }
+//                }
             }
         }
     }
 }
 
-private fun drawText(
-    textSize: Float,
-    text: String,
-    center: Offset,
-    angle: Float,
-    canvas: Canvas,
-    radius: Float,
-    alpha: Int,
-    color: Color = Color.White
-) {
-    canvas.drawText(
-        text,
-        center.x,
-        center.y,
-        angle = angle,
-        radius = radius,
-        color = color,
-        textSize = textSize,
-        isCenter = true,
-        alpha = alpha
-    )
-}

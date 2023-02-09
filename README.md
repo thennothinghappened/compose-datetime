@@ -1,12 +1,14 @@
 # Compose Date Time Picker
 
-This is a multiplatform port of ComposeMaterialDialogs - Date Time Picker
+### Multiplatform
 
-#### [Date and Time Picker Documentation](https://vanpra.github.io/compose-material-dialogs/DateTimePicker)
+- [x] JVM , Android & JS
+- [x] Material3
+- [x] Compose 1.3.0
+- [x] Kotlin 1.8.0
+- [x] Kotlinx DateTime
 
 ![](https://raw.githubusercontent.com/vanpra/compose-material-dialogs/main/imgs/date_and_time.png)
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/datetime/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/datetime)
 
 ### Usage
 

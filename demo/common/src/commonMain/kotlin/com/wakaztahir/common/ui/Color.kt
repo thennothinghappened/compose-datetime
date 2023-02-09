@@ -1,4 +1,4 @@
-package com.wakaztahir.composematerialdialogdemos.ui
+package com.wakaztahir.common.ui
 
 import androidx.compose.ui.graphics.Color
 

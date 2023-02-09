@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,7 +22,7 @@ import kotlinx.datetime.LocalTime
 fun DateTimeDialogDemo(modifier : Modifier = Modifier) = Column(modifier = modifier) {
 
     val dialogModifier = Modifier.padding(horizontal = 16.dp).widthIn(max = 420.dp).clip(RoundedCornerShape(4.dp))
-        .background(color = MaterialTheme.colors.background).padding(bottom = 8.dp)
+        .background(color = MaterialTheme.colorScheme.background).padding(bottom = 8.dp)
 
     SimpleDialogAndButton(
         buttonText = "Date Picker"

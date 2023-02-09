@@ -18,5 +18,6 @@ rootProject.name = "Compose-DateTime"
 
 include(":demo:android")
 include(":demo:desktop")
+include(":demo:web")
 include(":demo:common")
 include(":datetime")

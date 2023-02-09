@@ -10,10 +10,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -234,7 +233,7 @@ private fun CalendarViewHeader(
                     .paddingFromBaseline(top = 16.dp)
                     .wrapContentSize(Alignment.Center),
                 style = TextStyle(fontSize = 14.sp, fontWeight = W600),
-                color = MaterialTheme.colors.onBackground
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(Modifier.width(4.dp))
@@ -244,7 +243,7 @@ private fun CalendarViewHeader(
                         Icons.Default.KeyboardArrowUp // todo fix : ArrowDropUp is missing
                     else Icons.Default.ArrowDropDown,
                     contentDescription = "Year Selector",
-                    tint = MaterialTheme.colors.onBackground
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
@@ -268,7 +267,7 @@ private fun CalendarViewHeader(
                             }
                         }
                     ),
-                tint = MaterialTheme.colors.onBackground
+                tint = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.width(24.dp))
@@ -287,7 +286,7 @@ private fun CalendarViewHeader(
                             }
                         }
                     ),
-                tint = MaterialTheme.colors.onBackground
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }
     }
@@ -360,7 +359,7 @@ private fun DateSelectionBox(
                 .clip(CircleShape)
                 .background(colors.dateBackgroundColor(selected).value)
                 .wrapContentSize(Alignment.Center)
-                .alpha(if (enabled) ContentAlpha.high else ContentAlpha.disabled),
+                .alpha(if (enabled) colors.enabledAlpha else colors.disabledAlpha),
             style = TextStyle(
                 color = colors.dateTextColor(selected).value,
                 fontSize = 12.sp
@@ -369,7 +368,6 @@ private fun DateSelectionBox(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DayOfWeekHeader() {
     val dayHeaders = listOf("S", "M", "T", "W", "T", "F", "S")
@@ -391,7 +389,7 @@ private fun DayOfWeekHeader() {
                                 .fillMaxSize()
                                 .wrapContentSize(Alignment.Center),
                             style = TextStyle(fontSize = 14.sp, fontWeight = W600),
-                            color = MaterialTheme.colors.onBackground
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }

@@ -11,12 +11,17 @@ kotlin {
             kotlinOptions.jvmTarget = "11"
         }
     }
+    js(IR) {
+        browser()
+        binaries.executable()
+    }
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(compose.runtime)
                 api(compose.foundation)
-                api(compose.material)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                api(compose.material3)
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation(project(":datetime"))
             }

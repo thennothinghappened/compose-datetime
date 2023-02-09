@@ -29,7 +29,8 @@ kotlin {
             dependencies {
                 api(compose.runtime)
                 api(compose.foundation)
-                api(compose.material)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                api(compose.material3)
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("accompanist:pager:unspecified")
             }

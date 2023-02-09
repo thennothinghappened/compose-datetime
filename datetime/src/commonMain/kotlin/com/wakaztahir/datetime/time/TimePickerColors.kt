@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.dp
  */
 interface TimePickerColors {
     val border: BorderStroke
+    val enabledAlpha : Float get() = 1f
+    val disabledAlpha : Float get() = 0.5f
 
     /**
      * Gets the background color dependant on if the item is active or not
