@@ -6,12 +6,10 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("maven-publish")
-    id("shot")
-    id("org.jetbrains.dokka")
 }
 
 group = "com.wakaztahir"
-version = "1.0.7"
+version = "1.0.8"
 
 kotlin {
     android {
@@ -22,6 +20,10 @@ kotlin {
             kotlinOptions.jvmTarget = "11"
         }
     }
+    js(IR) {
+        browser()
+        binaries.executable()
+    }
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -29,7 +31,7 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
-                implementation("com.wakaztahir.accompanist:pager:0.26.5-beta")
+                implementation("accompanist:pager:unspecified")
             }
         }
         val commonTest by getting {
@@ -82,30 +84,15 @@ android {
     }
 }
 
-shot {
-    tolerance = 1.0 // Tolerance needed for CI
-}
-
-val githubProperties = Properties()
-try {
-    githubProperties.load(FileInputStream(rootProject.file("github.properties")))
-} catch (ex: Exception) {
-    ex.printStackTrace()
-}
-
 afterEvaluate {
     publishing {
         repositories {
             maven {
                 name = "GithubPackages"
                 url = uri("https://maven.pkg.github.com/Qawaz/compose-datetime")
-                try {
-                    credentials {
-                        username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
-                        password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
-                    }
-                }catch(ex : Exception){
-                    ex.printStackTrace()
+                credentials {
+                    username = (System.getenv("GPR_USER"))!!.toString()
+                    password = (System.getenv("GPR_API_KEY"))!!.toString()
                 }
             }
         }

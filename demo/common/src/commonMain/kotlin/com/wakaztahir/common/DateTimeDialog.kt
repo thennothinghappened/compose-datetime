@@ -30,6 +30,9 @@ fun DateTimeDialogDemo(modifier : Modifier = Modifier) = Column(modifier = modif
         DialogBox(onDismissRequest) {
             DatePicker(
                 modifier = dialogModifier,
+                onDateChange = {
+                    println(it.toString())
+                }
             )
         }
     }
@@ -40,6 +43,9 @@ fun DateTimeDialogDemo(modifier : Modifier = Modifier) = Column(modifier = modif
         DialogBox(onDismissRequest) {
             TimePicker(
                 modifier = dialogModifier,
+                onTimeChange = {
+                    println(it.toString())
+                }
             )
         }
     }
@@ -51,7 +57,10 @@ fun DateTimeDialogDemo(modifier : Modifier = Modifier) = Column(modifier = modif
             TimePicker(
                 modifier = dialogModifier, state = rememberTimePickerState(
                     timeRange = LocalTime(9, 35)..LocalTime(21, 13), is24HourClock = false
-                )
+                ),
+                onTimeChange = {
+                    println(it.toString())
+                }
             )
         }
     }
@@ -61,7 +70,10 @@ fun DateTimeDialogDemo(modifier : Modifier = Modifier) = Column(modifier = modif
     ) { onDismissRequest ->
         DialogBox(onDismissRequest) {
             TimePicker(
-                modifier = dialogModifier, state = rememberTimePickerState(is24HourClock = true)
+                modifier = dialogModifier, state = rememberTimePickerState(is24HourClock = true),
+                onTimeChange = {
+                    println(it.toString())
+                }
             )
         }
     }
@@ -72,8 +84,11 @@ fun DateTimeDialogDemo(modifier : Modifier = Modifier) = Column(modifier = modif
         DialogBox(onDismissRequest) {
             TimePicker(
                 modifier = dialogModifier, state = rememberTimePickerState(
-                    timeRange = LocalTime(9, 35)..LocalTime(21, 13), is24HourClock = true
-                )
+                    timeRange = LocalTime(9, 35)..LocalTime(21, 13), is24HourClock = true,
+                ),
+                onTimeChange = {
+                    println(it.toString())
+                }
             )
         }
     }

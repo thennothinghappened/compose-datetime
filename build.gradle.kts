@@ -8,9 +8,6 @@ buildscript {
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
-    dependencies {
-        classpath("com.karumi:shot:${property("shot.version")}")
-    }
 }
 
 plugins {
@@ -20,20 +17,8 @@ plugins {
     id("com.android.application").apply(false)
     id("com.android.library").apply(false)
     id("org.jetbrains.compose").apply(false)
-    id("org.jetbrains.dokka")
-    id("com.diffplug.spotless").version("6.0.4")
 }
 
-tasks.dokkaHtmlMultiModule.configure {
-    outputDirectory.set(rootProject.file("docs/api"))
-}
-
-val githubProperties = java.util.Properties()
-try {
-    githubProperties.load(FileInputStream(rootProject.file("github.properties")))
-} catch (ex: Exception) {
-    ex.printStackTrace()
-}
 
 allprojects {
     repositories {
@@ -44,13 +29,9 @@ allprojects {
         maven {
             name = "GithubPackages"
             url = uri("https://maven.pkg.github.com/Qawaz/compose-datetime")
-            try {
-                credentials {
-                    username = (githubProperties["gpr.usr"] ?: System.getenv("GPR_USER")).toString()
-                    password = (githubProperties["gpr.key"] ?: System.getenv("GPR_API_KEY")).toString()
-                }
-            } catch (ex: Exception) {
-                ex.printStackTrace()
+            credentials {
+                username = (System.getenv("GPR_USER"))!!.toString()
+                password = (System.getenv("GPR_API_KEY"))!!.toString()
             }
         }
     }
@@ -71,14 +52,6 @@ allprojects {
 }
 
 subprojects {
-    plugins.apply("com.diffplug.spotless")
-    spotless {
-        kotlin {
-            target("**/*.kt")
-            ktlint(property("ktlint.version") as String)
-        }
-    }
-
     tasks.withType<Test> {
         testLogging {
             showStandardStreams = true

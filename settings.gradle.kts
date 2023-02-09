@@ -12,8 +12,6 @@ pluginManagement {
         id("com.android.application").version(extra["agp.version"] as String)
         id("com.android.library").version(extra["agp.version"] as String)
         id("org.jetbrains.compose").version(extra["compose.version"] as String)
-        id("org.jetbrains.dokka").version(extra["kotlin.version"] as String)
-        id("shot").version(extra["shot.version"] as String)
     }
 }
 rootProject.name = "Compose-DateTime"
