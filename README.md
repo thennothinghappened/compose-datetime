@@ -8,9 +8,61 @@ This is a multiplatform port of ComposeMaterialDialogs - Date Time Picker
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/datetime/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.vanpra.compose-material-dialogs/datetime)
 
-
 ### Usage
 
+```kotlin
+
+// Constructing a modifier to use on all pickers 
+val pickerModifier = Modifier.padding(horizontal = 16.dp).widthIn(max = 420.dp).clip(RoundedCornerShape(4.dp))
+    .background(color = MaterialTheme.colors.background).padding(bottom = 8.dp)
+
+// Simple Date Picker without a dialog
+// You must use your own dialog on whichever platform you are
+DatePicker(
+    modifier = pickerModifier,
+    onDateChange = {
+        println(it.toString())
+    }
+)
+
+// Simple Time Picker without a dialog
+TimePicker(
+    modifier = pickerModifier,
+    onTimeChange = {
+        println(it.toString())
+    }
+)
+
+// TimePicker with a time range restriction
+TimePicker(
+    modifier = pickerModifier, state = rememberTimePickerState(
+        timeRange = LocalTime(9, 35)..LocalTime(21, 13), is24HourClock = false
+    ),
+    onTimeChange = {
+        println(it.toString())
+    }
+)
+
+// Time Picker with a 24 hour clock
+TimePicker(
+    modifier = pickerModifier, state = rememberTimePickerState(is24HourClock = true),
+    onTimeChange = {
+        println(it.toString())
+    }
+)
+
+
+// Time Picker with a time range restriction and a 24 hour clock
+TimePicker(
+    modifier = pickerModifier, state = rememberTimePickerState(
+        timeRange = LocalTime(9, 35)..LocalTime(21, 13), is24HourClock = true,
+    ),
+    onTimeChange = {
+        println(it.toString())
+    }
+)
+
+```
 
 ### Multiplatform Dependency
 
