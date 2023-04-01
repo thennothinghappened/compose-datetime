@@ -20,10 +20,10 @@ kotlin {
             kotlinOptions.jvmTarget = "11"
         }
     }
-    js(IR) {
-        browser()
-        binaries.executable()
-    }
+//    js(IR) {
+//        browser()
+//        binaries.executable()
+//    }
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -32,7 +32,7 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 api(compose.material3)
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
-                implementation("accompanist:pager:unspecified")
+                implementation("ca.gosyer:accompanist-pager:0.25.2")
             }
         }
         val commonTest by getting {
@@ -85,17 +85,17 @@ android {
     }
 }
 
-afterEvaluate {
-    publishing {
-        repositories {
-            maven {
-                name = "GithubPackages"
-                url = uri("https://maven.pkg.github.com/Qawaz/compose-datetime")
-                credentials {
-                    username = (System.getenv("GPR_USER"))!!.toString()
-                    password = (System.getenv("GPR_API_KEY"))!!.toString()
-                }
-            }
-        }
-    }
-}
+//afterEvaluate {
+//    publishing {
+//        repositories {
+//            maven {
+//                name = "GithubPackages"
+//                url = uri("https://maven.pkg.github.com/Qawaz/compose-datetime")
+//                credentials {
+//                    username = (System.getenv("GPR_USER"))!!.toString()
+//                    password = (System.getenv("GPR_API_KEY"))!!.toString()
+//                }
+//            }
+//        }
+//    }
+//}

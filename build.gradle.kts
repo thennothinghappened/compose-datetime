@@ -26,14 +26,14 @@ allprojects {
         mavenCentral()
         gradlePluginPortal()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-        maven {
-            name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/Qawaz/compose-datetime")
-            credentials {
-                username = (System.getenv("GPR_USER"))!!.toString()
-                password = (System.getenv("GPR_API_KEY"))!!.toString()
-            }
-        }
+//        maven {
+//            name = "GithubPackages"
+//            url = uri("https://maven.pkg.github.com/Qawaz/compose-datetime")
+//            credentials {
+//                username = (System.getenv("GPR_USER"))!!.toString()
+//                password = (System.getenv("GPR_API_KEY"))!!.toString()
+//            }
+//        }
     }
 
     tasks.withType<KotlinCompile>().all {
